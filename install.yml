@@ -1,0 +1,10 @@
+---
+
+- name: Naas default installation playbook
+  hosts: ovh
+  gather_facts: no
+  become: yes
+  roles:
+    - tools
+    - docker
+    - mesos-master

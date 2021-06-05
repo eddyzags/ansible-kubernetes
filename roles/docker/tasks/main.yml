@@ -1,0 +1,28 @@
+- name: Ensure docker dependencies
+  ansible.builtin.apt:
+    name:
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+    state: present
+
+- name: Add docker key
+  ansible.builtin.apt_key:
+    id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+    url: "https://download.docker.com/linux/{{ distribution }}/gpg"
+
+- name: Add GPG key
+  ansible.builtin.apt_repository:
+    repo: 'deb [arch=amd64] https://download.docker.com/linux/{{ distribution }} {{ distribution_release }} stable'
+    state: present
+    filename: docker
+    update_cache: true
+
+- name: Install docker engine
+  ansible.builtin.apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+    state: present
