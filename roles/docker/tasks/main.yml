@@ -19,6 +19,9 @@
     filename: docker
     update_cache: true
 
+- name: Add docker configuration file
+  template: src=daemon.j2 dest=/etc/docker/daemon.json
+
 - name: Install docker engine
   ansible.builtin.apt:
     name:
@@ -26,3 +29,9 @@
       - docker-ce-cli
       - containerd.io
     state: present
+
+- name: Restart docker daemon
+  ansible.builtin.systemd:
+    state: restarted
+    daemon_reload: yes
+    name: docker

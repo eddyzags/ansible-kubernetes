@@ -1,0 +1,24 @@
+---
+
+- name: Compare version
+  set_fact:
+    mac_addresses: "{{hostvars[inventory_hostname].ansible_default_ipv4.macaddress}}"
+
+- name: Download Google cloud public signing key
+  get_url:
+    url: "https://packages.cloud.google.com/apt/doc/apt-key.gpg"
+    dest: "/usr/share/keyrings/kubernetes-archive-keyring.gpg"
+
+- name: Add kubernetes repository
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main"
+    state: present
+
+- name: Install kubeadm, kubelet and kubectl
+  ansible.builtin.apt:
+    name:
+      - "kubelet"
+      - "kubeadm"
+      - "kubectl"
+    state: present
+

@@ -1,8 +1,11 @@
+---
+
 - name: Install general packages dependencies using apt
   ansible.builtin.apt:
     name:
       - "apt-transport-https"
       - "aptitude"
+      - "curl"
       - "python-minimal"
       - "python-simplejson"
       - "python3-pip"
