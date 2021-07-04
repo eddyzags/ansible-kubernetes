@@ -1,10 +1,16 @@
 ---
 
-- name: Naas default installation playbook
-  hosts: ovh
+- name: Yard distributed sytem default configuration
+  hosts: all
   gather_facts: no
   become: yes
   roles:
     - tools
+
+- name: Yard cloud app platform installation using Kubernetes
+  hosts: ovh
+  gather_facts: no
+  become: yes
+  roles:
     - docker
-    - mesos-master
+    - k8s
