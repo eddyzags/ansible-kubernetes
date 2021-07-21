@@ -1,0 +1,9 @@
+---
+
+apt_default_packages:
+  - "apt-transport-https"
+  - "aptitude"
+  - "curl"
+  - "python-minimal"
+  - "python-simplejson"
+  - "python3-pip"

@@ -2,11 +2,5 @@
 
 - name: Install common packages dependencies from package manager (apt)
   ansible.builtin.apt:
-    name:
-      - "apt-transport-https"
-      - "aptitude"
-      - "curl"
-      - "python-minimal"
-      - "python-simplejson"
-      - "python3-pip"
+    name: "{{ apt_default_packages }}"
     state: present
