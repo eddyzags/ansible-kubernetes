@@ -1,6 +1,6 @@
 ---
 
-- name: Install general packages dependencies using apt
+- name: Install common packages dependencies from package manager (apt)
   ansible.builtin.apt:
     name:
       - "apt-transport-https"

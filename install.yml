@@ -1,15 +1,14 @@
 ---
 
-- name: Yard distributed sytem default configuration
-  hosts: all
+- name: Apply Yard default configuration to every targeted hosts
+  hosts: scaleway
   gather_facts: no
   become: yes
   roles:
-    - tools
+    - common
 
 - name: Yard cloud app platform installation using Kubernetes
-  hosts: ovh
-  gather_facts: no
+  hosts: scaleway
   become: yes
   roles:
     - docker
