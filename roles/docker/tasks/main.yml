@@ -19,6 +19,9 @@
     filename: docker
     update_cache: true
 
+- name: Ensure docker configuration folder is present
+  file: path=/etc/docker state=directory
+
 - name: Add docker configuration file
   template: src=daemon.j2 dest=/etc/docker/daemon.json
 
