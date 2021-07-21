@@ -1,8 +1,14 @@
 ---
 
-- name: Compare version
+#- name: Set macaddress
+#  set_fact:
+#    macaddresses: []
+
+- name: "Compare version"
   set_fact:
-    mac_addresses: "{{hostvars[inventory_hostname].ansible_default_ipv4.macaddress}}"
+    macaddresses: "{{ macaddresses|default([]) + ansible_default_ipv4.macaddresses }}"
+
+- debug: var=macaddresses
 
 - name: Download Google cloud public signing key
   get_url:
@@ -21,4 +27,3 @@
       - "kubeadm"
       - "kubectl"
     state: present
-
