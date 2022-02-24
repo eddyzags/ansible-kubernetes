@@ -1,0 +1,9 @@
+- name: "Compare version"
+  set_fact:
+    macaddresses: " {{ macaddresses | default([]) }} + [ '{{ hostvars[item].ansible_default_ipv4.macaddress }}' ] "
+  loop: "{{ ansible_play_batch }}"
+  run_once: true
+
+- debug: var=macaddresses
+
+- debug: var="macaddresses | list | unique | count"
