@@ -1,0 +1,10 @@
+---
+
+- name: Download kubectl
+  get_url:
+    url: "wget https://storage.googleapis.com/kubernetes-release/release/{{ kubectl_version }}/bin/linux/amd64/kubectl"
+    dest: "/usr/local/bin/"
+    mode: "0700"
+
+- name: Ensure kubectl installed
+  ansible.builtin.command: kubectl version --client
