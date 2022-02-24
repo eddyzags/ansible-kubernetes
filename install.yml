@@ -1,15 +1,16 @@
 ---
 
 - name: Apply Yard default configuration to every targeted hosts
-  hosts: scaleway
+  hosts: home
   gather_facts: no
   become: yes
   roles:
     - common
 
 - name: Yard cloud app platform installation using Kubernetes
-  hosts: scaleway
+  hosts: home
   become: yes
   roles:
     - docker
-    - k8s
+    - cfssl
+#    - k8s
