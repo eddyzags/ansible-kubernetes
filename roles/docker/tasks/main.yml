@@ -23,7 +23,9 @@
   file: path=/etc/docker state=directory
 
 - name: Add docker configuration file
-  template: src=daemon.j2 dest=/etc/docker/daemon.json
+  ansible.builtin.template:
+    src: daemon.j2
+    dest: /etc/docker/daemon.json
 
 - name: Install docker engine
   ansible.builtin.apt:
