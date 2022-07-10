@@ -7,3 +7,4 @@ apt_default_packages:
   - "python3-minimal"
   - "python3-simplejson"
   - "python3-pip"
+  - "net-tools"

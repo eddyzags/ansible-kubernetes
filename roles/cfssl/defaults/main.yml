@@ -1,3 +1,11 @@
 ---
 
 cfssl_version: "1.6.1"
+
+
+# CSR information declarations
+csr_algo: "rsa"
+csr_country: "FR"
+csr_city: "Lille"
+csr_name: "Kubernetes"
+csr_state: "Nord"
