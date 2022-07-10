@@ -75,4 +75,3 @@
     enabled: yes
     state: started
 
-#TODO(eddyzags): Add verification that kube-controller-manager is actually running
