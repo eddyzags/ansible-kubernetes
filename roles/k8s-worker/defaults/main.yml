@@ -1,0 +1,6 @@
+---
+
+kube_worker_apt_dependencies:
+  - "socat"
+  - "conntrack"
+  - "ipset"

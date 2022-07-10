@@ -1,0 +1,7 @@
+---
+
+- name: Restart Kubernetes API server
+  ansible.builtin.systemd:
+    name: kube-apiserver
+    daemon_reload: yes
+    state: restarted
