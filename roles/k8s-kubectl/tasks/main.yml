@@ -1,0 +1,59 @@
+---
+
+- name: Download Google cloud public signing key
+  get_url:
+    url: "https://packages.cloud.google.com/apt/doc/apt-key.gpg"
+    dest: "/usr/share/keyrings/kubernetes-archive-keyring.gpg"
+
+- name: Add kubernetes repository
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main"
+    state: present
+
+- name: Ensure network filter module loaded
+  ansible.builtin.copy:
+    src: modules-load.d_k8s.conf
+    dest: /etc/modules-load.d/k8s.conf
+
+- name: Ensure network filter call iptables activated
+  ansible.builtin.copy:
+    src: sysctl.d_k8s.conf
+    dest: /etc/sysctl.d/k8s.conf
+
+- name: Restart reload settings from configuration files
+  ansible.builtin.command: sysctl --system
+
+- name: Install kubectl
+  ansible.builtin.apt:
+    name:
+      - "kubectl"
+    state: present
+
+- name: Prevent kubectl from being upgraded
+  dpkg_selections:
+    name: kubectl
+    selection: hold
+
+#- name: Transfer kubeadm configuration file
+#  ansible.builtin.copy:
+#    src: kubeadm-config.yaml
+#    dest: /etc/kubernetes/kubeadm-config.yaml
+
+#- name: Ensure API server log directory present
+#  file: path="{{ apiserver_log_dir }}" state=directory
+#
+#- name: Transfer apiserver configuration file
+#  template: src=apiserver-config.j2 dest=/etc/kubernetes/apiserver-config.yaml
+
+#- name: Ensure controller manager log directory present
+#  file: path="{{controller_manager_log_dir}}" state=directory
+
+#- name: Transfer controller manager configuration file
+#  template: src=controller-manager-config.j2 dest="{{ kubernetes_config_path }}/controller-manager-config.yaml"
+
+#- name: Ensure scheduler log directory present
+##  file: path="{{ scheduler_log_dir }}" state=directory
+
+#- name: Transfer scheduler configuration file
+#  template: src=scheduler-config.j2 dest="{{ scheduler_config_path }}"
+

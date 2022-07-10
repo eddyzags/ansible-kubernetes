@@ -1,0 +1,5 @@
+---
+
+default_cgroup_driver: systemd
+log_max_size: 100m
+log_driver: "json-file"

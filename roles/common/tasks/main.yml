@@ -4,5 +4,4 @@
   ansible.builtin.apt:
     name: "{{ apt_default_packages }}"
     state: present
-    retries: 2
-    delay: 3
+

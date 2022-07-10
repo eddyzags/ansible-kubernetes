@@ -1,5 +1,5 @@
 ---
 # Variable applied to all hosts in the inventory
 
-distribution=debian
-distribution_release=buster
+distribution: debian
+distribution_release: buster

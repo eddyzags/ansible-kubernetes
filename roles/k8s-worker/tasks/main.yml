@@ -1,0 +1,11 @@
+---
+
+- name: Download kube-worker apt dependencies
+  ansible.builtin.apt:
+    name: "{{ kube_worker_apt_packages }}"
+    state: present
+
+- name: Disabling swap memory
+  ansible.builtin.command: "swapoff -a"
+
+- name: Downloading 
