@@ -1,13 +1,13 @@
 ---
 
-- name: Apply Yard default configuration to every targeted hosts
+- name: Provision yard default configuration
   hosts: home
   gather_facts: no
   become: yes
   roles:
     - common
 
-- name: Yard cloud app platform installation using Kubernetes
+- name: Provision yard Kubernetes orchestration
   hosts: home
   become: yes
   vars:
