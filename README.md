@@ -1,5 +1,2 @@
 # yard
-personal cloud application cluster
-
-## Requirements
-* sudo - program designed to allow a sysadmin to give limited root privileges
+This repository contains the infrastructure as a code to automate the deployment process of my personal cluster.
