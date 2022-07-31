@@ -72,3 +72,9 @@
     name: kube-apiserver
     enabled: yes
     state: started
+
+- name: Ensure current kube-apiserver status
+  ansible.builtin.uri:
+    url: https://localhost:6443/livez
+    validate_certs: false
+
