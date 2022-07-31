@@ -56,9 +56,9 @@
     --user=system:kube-scheduler \
     --kubeconfig={{ kube_scheduler_config_path }}/kube-scheduler.kubeconfig"
 
-- name: Use default context for kubectl
-  ansible.builtin.command: "kubectl config set-context default \
-    --kubeconfig=kube-scheduler.kubeconfig"
+- name: Use default context for kubescheduler
+  ansible.builtin.command: "kubectl config use-context default \
+    --kubeconfig={{ kube_scheduler_config_path }}/kube-scheduler.kubeconfig"
 
 - name: Start kube-scheduler daemon (systemd)
   ansible.builtin.systemd:

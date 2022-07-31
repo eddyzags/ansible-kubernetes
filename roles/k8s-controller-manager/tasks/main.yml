@@ -18,28 +18,28 @@
 
 - name: Upload certificate authority public key
   ansible.builtin.copy:
-    src: "{{ lookup('env', 'HOME') }}/.kubernetes.pkis/ca.pem"
+    src: "ca.pem"
     dest: "{{ kube_controller_manager_config_path }}"
 
 - name: Upload certificate authority private key
   ansible.builtin.copy:
-    src: "{{ lookup('env', 'HOME') }}/.kubernetes.pkis/ca-key.pem"
+    src: "ca-key.pem"
     dest: "{{ kube_controller_manager_config_path }}"
 
 
 - name: Upload kube-controller-manager certificate private key
   ansible.builtin.copy:
-    src: "{{ lookup('env', 'HOME') }}/.kubernetes.pkis/kube-controller-manager-key.pem"
+    src: "kube-controller-manager-key.pem"
     dest: "{{ kube_controller_manager_config_path }}"
 
 - name: Upload kube-controller-manager certificate public key
   ansible.builtin.copy:
-    src: "{{ lookup('env', 'HOME') }}/.kubernetes.pkis/kube-controller-manager.pem"
+    src: "kube-controller-manager.pem"
     dest: "{{ kube_controller_manager_config_path }}"
 
 - name: Upload kube-controller key pair to generate sign service account tokens
   ansible.builtin.copy:
-    src: "{{ lookup('env', 'HOME') }}/.kubernetes.pkis/service-account.pem"
+    src: "service-account.pem"
     dest: "{{ kube_controller_manager_config_path }}"
 
 - name: Generate kubeconfig file for set-cluster
@@ -61,6 +61,10 @@
   ansible.builtin.command: "kubectl config set-context default \
   --cluster={{ cluster_name }} \
   --user=system:kube-controller-manager \
+  --kubeconfig={{ kube_controller_manager_config_path }}/kube-controller-manager.kubeconfig"
+
+- name: Use generated default context for kube-controller-manager
+  ansible.builtin.command: "kubectl config use-context default \
   --kubeconfig={{ kube_controller_manager_config_path }}/kube-controller-manager.kubeconfig"
 
 - name: Upload kube-controller-manager service unit (systemd)
