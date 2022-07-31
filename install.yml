@@ -15,7 +15,6 @@
     cluster_name: "yard-kubernetes"
   roles:
     - docker
-    - cfssl
     - k8s-kubectl
     - k8s-etcd
     - k8s-api-server
