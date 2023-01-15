@@ -5,6 +5,8 @@ Documentation=https://github.com/kubernetes/kubernetes
 [Service]
 ExecStart="/usr/local/bin/kube-scheduler" \
   --config={{ kube_scheduler_config_path }}/kube-scheduler.yaml \
+  --authorization-kubeconfig="{{ kube_scheduler_config_path }}/kube-scheduler.kubeconfig" \
+  --bind-address=0.0.0.0 \
   --v=2
 Restart=on-failure
 RestartSec=5
