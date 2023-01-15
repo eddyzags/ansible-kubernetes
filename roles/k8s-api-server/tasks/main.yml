@@ -70,11 +70,11 @@
 - name: Start kube-apiserver service
   ansible.builtin.systemd:
     name: kube-apiserver
+    daemon_reload: yes
     enabled: yes
-    state: started
+    state: restarted
 
 - name: Ensure current kube-apiserver status
   ansible.builtin.uri:
-    url: https://localhost:6443/livez
-    validate_certs: false
-
+    url: https://192.168.1.50:6443/livez
+    ca_path: "/var/lib/kubernetes/ca.pem"
