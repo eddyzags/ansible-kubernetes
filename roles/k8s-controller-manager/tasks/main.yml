@@ -39,25 +39,25 @@
 
 - name: Upload kube-controller key pair to generate sign service account tokens
   ansible.builtin.copy:
-    src: "service-account.pem"
+    src: "service-account-key.pem"
     dest: "{{ kube_controller_manager_config_path }}"
 
 - name: Generate kubeconfig file for set-cluster
   ansible.builtin.command: "kubectl config set-cluster {{ cluster_name }} \
   --certificate-authority={{ kube_controller_manager_config_path }}/ca.pem \
   --embed-certs=true \
-  --server=https://127.0.0.1:6443 \
+  --server=https://192.168.1.50:6443 \
   --kubeconfig={{ kube_controller_manager_config_path }}/kube-controller-manager.kubeconfig"
 
-- name: Generate kubeconfig file for set-credentials
+- name: Generate kubeconfig file for kube-controller-manager set-credentials
   ansible.builtin.command: "kubectl config set-credentials system:kube-controller-manager \
-  --certificate-authority={{ kube_controller_manager_config_path }}/kube-controller-manager.pem \
+  --client-certificate={{ kube_controller_manager_config_path }}/kube-controller-manager.pem \
   --client-key={{ kube_controller_manager_config_path }}/kube-controller-manager-key.pem \
   --embed-certs=true \
-  --server=https://127.0.0.1:6443 \
+  --server=https://192.168.1.50:6443 \
   --kubeconfig={{ kube_controller_manager_config_path }}/kube-controller-manager.kubeconfig"
 
-- name: Generate kubeconfig file for set-context
+- name: Generate kubeconfig file for kube-controller-manager set-context
   ansible.builtin.command: "kubectl config set-context default \
   --cluster={{ cluster_name }} \
   --user=system:kube-controller-manager \
@@ -77,5 +77,5 @@
     name: kube-controller-manager
     daemon_reload: yes
     enabled: yes
-    state: started
+    state: restarted
 
