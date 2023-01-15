@@ -1,13 +1,13 @@
 ---
 
-- name: Provision yard default configuration
+- name: Provision Kubernetes cluster default configuration
   hosts: home
   gather_facts: no
   become: yes
   roles:
     - common
 
-- name: Provision yard Kubernetes orchestration
+- name: Provision Kubernetes cluster
   hosts: home
   become: yes
   vars:
