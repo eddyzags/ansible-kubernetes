@@ -1,6 +1,11 @@
 ---
 
-- name: Install common packages dependencies from package manager (apt)
-  ansible.builtin.apt:
-    name: "{{ apt_default_packages }}"
-    state: present
+- name: Executing install tasks for common role
+  ansible.builtin.include_tasks:
+    file: install.yml
+  when: playbook_mode == "install"
+
+- name: Executing uninstall tasks for common role
+  ansible.builtin.include_tasks:
+    file: uninstall.yml
+  when: playbook_mode == "uninstall"
