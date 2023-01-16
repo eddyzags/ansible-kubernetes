@@ -4,6 +4,8 @@
   hosts: home
   gather_facts: no
   become: yes
+  vars:
+    playbook_mode: "install"
   roles:
     - common
 

@@ -1,0 +1,10 @@
+---
+
+- name: Deprovisionning Kubernetes cluster default configuration
+  hosts: home
+  gather_facts: no
+  become: yes
+  vars:
+    playbook_mode: "uninstall"
+  roles:
+    - common
