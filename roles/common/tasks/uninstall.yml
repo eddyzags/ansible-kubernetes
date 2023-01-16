@@ -1,0 +1,10 @@
+---
+
+- name: Uninstall common packages dependencies using (apt)
+  ansible.builtin.apt:
+    name: "{{ apt_default_packages }}"
+    state: absent
+
+- name: Remove no longer needed dependencies
+  ansible.builtin.apt:
+    autoremove: true
