@@ -8,3 +8,4 @@
     playbook_mode: "uninstall"
   roles:
     - common
+    - docker
