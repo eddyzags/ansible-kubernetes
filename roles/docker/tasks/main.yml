@@ -20,12 +20,12 @@
     update_cache: true
 
 - name: Ensure docker configuration folder is present
-  file: path=/etc/docker state=directory
+  file: path="{{ configuration_folder_path }}" state=directory
 
 - name: Add docker configuration file
   ansible.builtin.template:
     src: daemon.j2
-    dest: /etc/docker/daemon.json
+    dest: "{{ configuration_folder_path }}/daemon.json"
 
 - name: Install docker engine
   ansible.builtin.apt:
