@@ -1,0 +1,23 @@
+---
+
+- name: Uninstall docker engine
+  ansible.builtin.apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+    state: absent
+
+- name: Remove docker configuration file
+  ansible.builtin.file:
+    path: "{{ configuration_folder_path }}"
+    state: absent
+
+- name: Remove docker apt repository from configuration files
+  filename: docker
+  state: absent
+
+- name: Shutting down service
+  ansible.builtin.systemd:
+    name: docker
+    state: stopped
