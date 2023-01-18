@@ -1,81 +1,11 @@
 ---
 
-- name: Downloading kube-controller-manager binary
-  ansible.builtin.get_url:
-    url: "https://storage.googleapis.com/kubernetes-release/release/v{{ kube_controller_manager_version }}/bin/linux/amd64/kube-controller-manager"
-    dest: "/usr/local/bin/"
-    mode: '0744'
+- name: Executing install tasks for kube-controller-manager
+  ansible.builtin.include_tasks:
+    file: install.yml
+  when: playbook_mode == "install"
 
-- name: Ensure kubernetes kube-controller-manager configuration file present
-  ansible.builtin.file:
-    path: "{{ kube_controller_manager_config_path }}"
-    state: directory
-
-- name: Ensure kubernetes var lib present
-  ansible.builtin.file:
-    path: /var/lib/kubernetes
-    state: directory
-
-- name: Upload certificate authority public key
-  ansible.builtin.copy:
-    src: "ca.pem"
-    dest: "{{ kube_controller_manager_config_path }}"
-
-- name: Upload certificate authority private key
-  ansible.builtin.copy:
-    src: "ca-key.pem"
-    dest: "{{ kube_controller_manager_config_path }}"
-
-
-- name: Upload kube-controller-manager certificate private key
-  ansible.builtin.copy:
-    src: "kube-controller-manager-key.pem"
-    dest: "{{ kube_controller_manager_config_path }}"
-
-- name: Upload kube-controller-manager certificate public key
-  ansible.builtin.copy:
-    src: "kube-controller-manager.pem"
-    dest: "{{ kube_controller_manager_config_path }}"
-
-- name: Upload kube-controller key pair to generate sign service account tokens
-  ansible.builtin.copy:
-    src: "service-account-key.pem"
-    dest: "{{ kube_controller_manager_config_path }}"
-
-- name: Generate kubeconfig file for set-cluster
-  ansible.builtin.command: "kubectl config set-cluster {{ cluster_name }} \
-  --certificate-authority={{ kube_controller_manager_config_path }}/ca.pem \
-  --embed-certs=true \
-  --server=https://192.168.1.50:6443 \
-  --kubeconfig={{ kube_controller_manager_config_path }}/kube-controller-manager.kubeconfig"
-
-- name: Generate kubeconfig file for kube-controller-manager set-credentials
-  ansible.builtin.command: "kubectl config set-credentials system:kube-controller-manager \
-  --client-certificate={{ kube_controller_manager_config_path }}/kube-controller-manager.pem \
-  --client-key={{ kube_controller_manager_config_path }}/kube-controller-manager-key.pem \
-  --embed-certs=true \
-  --server=https://192.168.1.50:6443 \
-  --kubeconfig={{ kube_controller_manager_config_path }}/kube-controller-manager.kubeconfig"
-
-- name: Generate kubeconfig file for kube-controller-manager set-context
-  ansible.builtin.command: "kubectl config set-context default \
-  --cluster={{ cluster_name }} \
-  --user=system:kube-controller-manager \
-  --kubeconfig={{ kube_controller_manager_config_path }}/kube-controller-manager.kubeconfig"
-
-- name: Use generated default context for kube-controller-manager
-  ansible.builtin.command: "kubectl config use-context default \
-  --kubeconfig={{ kube_controller_manager_config_path }}/kube-controller-manager.kubeconfig"
-
-- name: Upload kube-controller-manager service unit (systemd)
-  ansible.builtin.template:
-    src: kube-controller-manager.j2
-    dest: /etc/systemd/system/kube-controller-manager.service
-
-- name: Start kuber-controller-manager service (systemd)
-  ansible.builtin.systemd:
-    name: kube-controller-manager
-    daemon_reload: yes
-    enabled: yes
-    state: restarted
-
+- name: Executing uninstall tasks for kube-controller-manager
+  ansible.builtin.include_tasks:
+    file: uninstall.yml
+  when: playbook_mode == "uninstall"
