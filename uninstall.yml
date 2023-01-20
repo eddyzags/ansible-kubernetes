@@ -12,3 +12,4 @@
     - k8s-api-server
     - k8s-controller-manager
     - k8s-etcd
+    - k8s-kubectl
