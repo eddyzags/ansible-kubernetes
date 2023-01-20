@@ -1,0 +1,18 @@
+---
+
+- name: Removing etcd files
+  ansible.builtin.file:
+    path: "{{ items }}"
+    state: absent
+  with_items:
+    - "/tmp/etcd-v{{ etcd_version }}-linux-amd64.tar.gz"
+    - /usr/local/bin/etcdctl
+    - /usr/local/bin/etcd
+    - /var/lib/etcd
+    - /etc/etcd
+    - /etc/systemd/system/etcd.service
+
+- name: Shutting down etcd service
+  ansible.builtin.systemd:
+    name: etcd
+    state: stopped
