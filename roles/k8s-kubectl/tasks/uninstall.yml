@@ -1,0 +1,11 @@
+---
+
+- name: Removing file for kubectl
+  ansible.builtin.apt_repository:
+    filename: apt_kubernetes_io
+    state: absent
+
+- name: Removing kubectl binary
+  ansible.builtin.apt:
+    name: kubectl
+    state: absent

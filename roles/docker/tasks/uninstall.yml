@@ -14,8 +14,9 @@
     state: absent
 
 - name: Remove docker apt repository from configuration files
-  filename: docker
-  state: absent
+  ansible.builtin.apt_repository:
+    filename: docker
+    state: absent
 
 - name: Shutting down service
   ansible.builtin.systemd:
