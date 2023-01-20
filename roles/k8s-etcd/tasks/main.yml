@@ -1,7 +1,5 @@
 ---
 
----
-
 - name: Executing install tasks for etcd
   ansible.builtin.include_tasks:
     file: install.yml

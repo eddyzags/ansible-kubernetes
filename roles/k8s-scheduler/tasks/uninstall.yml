@@ -2,7 +2,7 @@
 
 - name: Removing kube-scheduler files
   ansible.builtin.file:
-    path: "{{ items }}"
+    path: "{{ item }}"
     state: absent
   with_items:
     - "{{ kube_scheduler_config_path }}/kube-scheduler.yaml"

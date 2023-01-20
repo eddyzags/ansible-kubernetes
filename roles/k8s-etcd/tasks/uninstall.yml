@@ -2,7 +2,7 @@
 
 - name: Removing etcd files
   ansible.builtin.file:
-    path: "{{ items }}"
+    path: "{{ item }}"
     state: absent
   with_items:
     - "/tmp/etcd-v{{ etcd_version }}-linux-amd64.tar.gz"

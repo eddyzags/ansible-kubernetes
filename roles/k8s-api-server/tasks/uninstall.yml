@@ -2,7 +2,7 @@
 
 - name: Removing kube-apiserver files
   ansible.builtin.file:
-    path: "{{ items }}"
+    path: "{{ item }}"
     state: absent
   with_items:
     - /usr/local/kube-apiserver
@@ -15,7 +15,7 @@
     - /var/lib/kubernetes/encryption-config.yaml
     - /etc/systemd/system/kube-apiserver.service
 
-- name: Shutting down kube-apiserver
+- name: Shutting down kube-apiserver service
   ansible.builtin.systemd:
     name: kube-apiserver
     state: stopped

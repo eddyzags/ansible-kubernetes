@@ -2,7 +2,7 @@
 
 - name: Removing kube-controller-manager files
   ansible.builtin.file:
-    path: "{{ items }}"
+    path: "{{ item }}"
     state: absent
   with_items:
     - /usr/local/kube-controller-manager
@@ -11,7 +11,7 @@
     - /var/lib/kubernetes/kube-controller-manager-key.pem
     - /var/lib/kubernetes/kube-controller-manager.pem
     - /var/lib/kubernetes/service-account-key.pem
-    - "{{ kube_controller_manager_config_path }}"/kube-controller-manager.kubeconfig
+    - "{{ kube_controller_manager_config_path }}/kube-controller-manager.kubeconfig"
     - /etc/systemd/system/kube-controller-manager.service
 
 - name: Shutting down kube-controller-manager service

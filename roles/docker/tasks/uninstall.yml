@@ -15,10 +15,10 @@
 
 - name: Remove docker apt repository from configuration files
   ansible.builtin.apt_repository:
-    filename: docker
+    repo: 'deb [arch=amd64] https://download.docker.com/linux/{{ distribution }} {{ distribution_release }} stable'
     state: absent
 
-- name: Shutting down service
+- name: Shutting down docker service
   ansible.builtin.systemd:
     name: docker
     state: stopped
