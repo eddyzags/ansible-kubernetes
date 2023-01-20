@@ -36,6 +36,7 @@
       - docker-ce-cli
       - containerd.io
     state: present
+    update_cache: true
 
 - name: Restart docker daemon
   ansible.builtin.systemd:
