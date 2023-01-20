@@ -1,68 +1,11 @@
 ---
 
-- name: Download kube-scheduler binary
-  ansible.builtin.get_url:
-    url: "https://storage.googleapis.com/kubernetes-release/release/v{{ kube_scheduler_version }}/bin/linux/amd64/kube-scheduler"
-    dest: "/usr/local/bin"
-    mode: '0744'
+- name: Executing install tasks for kube-scheduler
+  ansible.builtin.include_tasks:
+    file: install.yml
+  when: playbook_mode == "install"
 
-- name: Ensure kube-scheduler configuration directory present
-  ansible.builtin.file:
-    path: "{{ kube_scheduler_config_path }}"
-    state: directory
-
-- name: Upload kube-scheduler configuration yaml
-  ansible.builtin.template:
-    src: kube-scheduler.yaml.j2
-    dest: "{{ kube_scheduler_config_path }}/kube-scheduler.yaml"
-
-- name: Upload certificate authority public key for kube-scheduler
-  ansible.builtin.copy:
-    src: "{{ lookup('env', 'HOME') }}/.kubernetes.pkis/ca.pem"
-    dest: "{{ kube_scheduler_config_path }}"
-
-- name: Upload kube-scheduler certificate
-  ansible.builtin.copy:
-    src: "{{ lookup('env', 'HOME') }}/.kubernetes.pkis/kube-scheduler.pem"
-    dest: "{{ kube_scheduler_config_path }}"
-
-- name: Upload kube-scheduler certificate key
-  ansible.builtin.copy:
-    src: "{{ lookup('env', 'HOME') }}/.kubernetes.pkis/kube-scheduler-key.pem"
-    dest: "{{ kube_scheduler_config_path }}"
-
-- name: Upload kube-scheduler service unit file (systemd)
-  ansible.builtin.template:
-    src: kube-scheduler.service.j2
-    dest: /etc/systemd/system/kube-scheduler.service
-
-- name: Generate kubeconfig for kube-scheduler set-cluster
-  ansible.builtin.command: "kubectl config set-cluster {{ cluster_name }} \
-    --certificate-authority={{ kube_scheduler_config_path }}/ca.pem \
-    --embed-certs=true \
-    --server=https://192.168.1.50:6443 \
-    --kubeconfig={{ kube_scheduler_config_path }}/kube-scheduler.kubeconfig"
-
-- name: Generate kubeconfig for kube-scheduler set-credentials
-  ansible.builtin.command: "kubectl config set-credentials system:kube-scheduler \
-    --client-certificate={{ kube_scheduler_config_path }}/kube-scheduler.pem \
-    --client-key={{ kube_scheduler_config_path }}/kube-scheduler-key.pem \
-    --embed-certs=true \
-    --kubeconfig={{ kube_scheduler_config_path }}/kube-scheduler.kubeconfig"
-
-- name: Generate kubeconfig for kube-scheduler set-context
-  ansible.builtin.command: "kubectl config set-context default \
-    --cluster={{ cluster_name }} \
-    --user=system:kube-scheduler \
-    --kubeconfig={{ kube_scheduler_config_path }}/kube-scheduler.kubeconfig"
-
-- name: Use default context for kubescheduler
-  ansible.builtin.command: "kubectl config use-context default \
-    --kubeconfig={{ kube_scheduler_config_path }}/kube-scheduler.kubeconfig"
-
-- name: Start kube-scheduler daemon (systemd)
-  ansible.builtin.systemd:
-    name: kube-scheduler
-    daemon_reload: yes
-    enabled: yes
-    state: restarted
+- name: Executing uninstall tasks for kube-scheduler
+  ansible.builtin.include_tasks:
+    file: uninstall.yml
+  when: playbook_mode == "uninstall"
