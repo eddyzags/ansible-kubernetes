@@ -13,3 +13,4 @@
     - k8s-controller-manager
     - k8s-etcd
     - k8s-kubectl
+    - k8s-scheduler
