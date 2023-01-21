@@ -1,16 +1,13 @@
 ---
 
-- name: Removing kube-scheduler files
+- name: Removing configuration and binary files
   ansible.builtin.file:
     path: "{{ item }}"
     state: absent
   with_items:
-    - "{{ kube_scheduler_config_path }}/kube-scheduler.yaml"
-    - "{{ kube_scheduler_config_path }}/ca.pem"
-    - "{{ kube_scheduler_config_path }}/kube-scheduler.pem"
-    - "{{ kube_scheduler_config_path }}/kube-scheduler-key.pem"
+    - "/usr/local/bin/kube-scheduler"
+    - "{{ kube_scheduler_config_path }}"
     - "/etc/systemd/system/kube-scheduler.service"
-    - "{{ kube_scheduler_config_path }}/kube-scheduler.kubeconfig"
 
 - name: Shutting down kube-scheduler service
   ansible.builtin.systemd:
