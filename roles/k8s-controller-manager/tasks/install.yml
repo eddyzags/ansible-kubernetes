@@ -79,3 +79,8 @@
     enabled: yes
     state: restarted
 
+- name: Ensure that the service is running by querying /healthz
+  ansible.builtin.uri:
+    url: http://192.168.1.50:10252/healthz
+  tags:
+    - test
