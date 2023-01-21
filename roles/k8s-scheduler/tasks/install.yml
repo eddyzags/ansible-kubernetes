@@ -66,3 +66,9 @@
     daemon_reload: yes
     enabled: yes
     state: restarted
+
+- name: Ensure that service is running /healthz
+  ansible.builtin.uri:
+    url: http://192.168.1.50:10251/healthz
+  tags:
+    - test
