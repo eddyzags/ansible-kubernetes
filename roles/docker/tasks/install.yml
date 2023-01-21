@@ -1,6 +1,6 @@
 ---
 
-- name: Ensure docker dependencies
+- name: Installing dependencies
   ansible.builtin.apt:
     name:
       - ca-certificates
@@ -9,7 +9,7 @@
       - lsb-release
     state: present
 
-- name: Add docker key
+- name: Add apt key
   ansible.builtin.apt_key:
     id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
     url: "https://download.docker.com/linux/{{ distribution }}/gpg"
@@ -21,15 +21,15 @@
     filename: docker
     update_cache: true
 
-- name: Ensure docker configuration folder is present
+- name: Creating configuration folder is present
   file: path="{{ configuration_folder_path }}" state=directory
 
-- name: Add docker configuration file
+- name: Adding configuration file
   ansible.builtin.template:
     src: daemon.j2
     dest: "{{ configuration_folder_path }}/daemon.json"
 
-- name: Install docker engine
+- name: Installing docker engine
   ansible.builtin.apt:
     name:
       - docker-ce
@@ -40,13 +40,13 @@
   retries: 3
   delay: 2
 
-- name: Restart docker daemon
+- name: Restarting docker daemon
   ansible.builtin.systemd:
     state: restarted
     daemon_reload: yes
     name: docker
 
-- name: Ensure docker is running
+- name: Ensure service is running
   ansible.builtin.command: docker info
   tags:
     - test

@@ -6,50 +6,50 @@
     dest: "/usr/local/bin/"
     mode: '0744'
 
-- name: Ensure kubernetes kube-controller-manager configuration file present
+- name: Creating configuration directory
   ansible.builtin.file:
     path: "{{ kube_controller_manager_config_path }}"
     state: directory
 
-- name: Ensure kubernetes var lib present
+- name: Creating kubernetes var lib directory
   ansible.builtin.file:
     path: /var/lib/kubernetes
     state: directory
 
-- name: Upload certificate authority public key
+- name: Uploading certificate authority public key
   ansible.builtin.copy:
     src: "ca.pem"
     dest: "{{ kube_controller_manager_config_path }}"
 
-- name: Upload certificate authority private key
+- name: Uploading certificate authority private key
   ansible.builtin.copy:
     src: "ca-key.pem"
     dest: "{{ kube_controller_manager_config_path }}"
 
 
-- name: Upload kube-controller-manager certificate private key
+- name: Uploading certificate private key
   ansible.builtin.copy:
     src: "kube-controller-manager-key.pem"
     dest: "{{ kube_controller_manager_config_path }}"
 
-- name: Upload kube-controller-manager certificate public key
+- name: Uploading certificate public key
   ansible.builtin.copy:
     src: "kube-controller-manager.pem"
     dest: "{{ kube_controller_manager_config_path }}"
 
-- name: Upload kube-controller key pair to generate sign service account tokens
+- name: Uploading service account key pair
   ansible.builtin.copy:
     src: "service-account-key.pem"
     dest: "{{ kube_controller_manager_config_path }}"
 
-- name: Generate kubeconfig file for set-cluster
+- name: Setting cluster config (kubectl config)
   ansible.builtin.command: "kubectl config set-cluster {{ cluster_name }} \
   --certificate-authority={{ kube_controller_manager_config_path }}/ca.pem \
   --embed-certs=true \
   --server=https://192.168.1.50:6443 \
   --kubeconfig={{ kube_controller_manager_config_path }}/kube-controller-manager.kubeconfig"
 
-- name: Generate kubeconfig file for kube-controller-manager set-credentials
+- name: Setting cluster config credentials (kubectl config)
   ansible.builtin.command: "kubectl config set-credentials system:kube-controller-manager \
   --client-certificate={{ kube_controller_manager_config_path }}/kube-controller-manager.pem \
   --client-key={{ kube_controller_manager_config_path }}/kube-controller-manager-key.pem \
@@ -57,29 +57,29 @@
   --server=https://192.168.1.50:6443 \
   --kubeconfig={{ kube_controller_manager_config_path }}/kube-controller-manager.kubeconfig"
 
-- name: Generate kubeconfig file for kube-controller-manager set-context
+- name: Setting cluster config context (kubectl config)
   ansible.builtin.command: "kubectl config set-context default \
   --cluster={{ cluster_name }} \
   --user=system:kube-controller-manager \
   --kubeconfig={{ kube_controller_manager_config_path }}/kube-controller-manager.kubeconfig"
 
-- name: Use generated default context for kube-controller-manager
+- name: Setting current context (kubectl config)
   ansible.builtin.command: "kubectl config use-context default \
   --kubeconfig={{ kube_controller_manager_config_path }}/kube-controller-manager.kubeconfig"
 
-- name: Upload kube-controller-manager service unit (systemd)
+- name: Uploading service unit (systemd)
   ansible.builtin.template:
     src: kube-controller-manager.j2
     dest: /etc/systemd/system/kube-controller-manager.service
 
-- name: Start kuber-controller-manager service (systemd)
+- name: Starting service (systemd)
   ansible.builtin.systemd:
     name: kube-controller-manager
     daemon_reload: yes
     enabled: yes
     state: restarted
 
-- name: Ensure that the service is running by querying /healthz
+- name: Ensure service is running GET - /healthz
   ansible.builtin.uri:
     url: http://192.168.1.50:10252/healthz
   tags:

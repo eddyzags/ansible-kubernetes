@@ -1,6 +1,6 @@
 ---
 
-- name: Install common packages dependencies from package manager (apt)
+- name: Install packages dependencies from package manager (apt)
   ansible.builtin.apt:
     name: "{{ apt_default_packages }}"
     state: present

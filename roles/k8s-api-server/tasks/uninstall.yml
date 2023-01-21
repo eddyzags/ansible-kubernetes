@@ -15,7 +15,7 @@
     - /var/lib/kubernetes/encryption-config.yaml
     - /etc/systemd/system/kube-apiserver.service
 
-- name: Shutting down kube-apiserver service
+- name: Shutting down service
   ansible.builtin.systemd:
     name: kube-apiserver
     state: stopped
