@@ -1,12 +1,12 @@
 ---
 
-- name: Removing file for kubectl
+- name: Removing apt repository
   ansible.builtin.apt_repository:
     repo: 'deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main'
     filename: apt_kubernetes_io
     state: absent
 
-- name: Removing kubectl binary
+- name: Removing binary (apt)
   ansible.builtin.apt:
     name: kubectl
     state: absent
