@@ -1,6 +1,6 @@
 ---
 
-- name: Removing etcd files
+- name: Removing configuration and binary files
   ansible.builtin.file:
     path: "{{ item }}"
     state: absent
@@ -12,7 +12,7 @@
     - /etc/etcd
     - /etc/systemd/system/etcd.service
 
-- name: Shutting down etcd service
+- name: Shutting down service (systemd)
   ansible.builtin.systemd:
     name: etcd
     state: stopped

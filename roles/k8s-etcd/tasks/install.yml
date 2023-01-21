@@ -1,70 +1,70 @@
 ---
 
-- name: Downloading etcd official release binaries
+- name: Downloading release binary
   get_url:
     url: "https://github.com/etcd-io/etcd/releases/download/v{{ etcd_version }}/etcd-v{{ etcd_version }}-linux-amd64.tar.gz"
     dest: /tmp
     mode: '0744'
 
-- name: Unarchive etcd binaries
+- name: Unarchiving binary
   ansible.builtin.unarchive:
     src: "/tmp/etcd-v{{ etcd_version }}-linux-amd64.tar.gz"
     dest: /tmp
     remote_src: yes
 
-- name: Install etcd binary
+- name: Installing binary
   ansible.builtin.copy:
     src: "/tmp/etcd-v{{ etcd_version }}-linux-amd64/etcd"
     dest: /usr/local/bin
     mode: '0777'
     remote_src: yes
 
-- name: Install etcdctl binary
+- name: Installing etcdctl binary
   ansible.builtin.copy:
     src: "/tmp/etcd-v{{ etcd_version }}-linux-amd64/etcdctl"
     dest: /usr/local/bin
     mode: '0777'
     remote_src: yes
 
-- name: Ensure etcd configuration directories present
+- name: Creating configuration directory
   ansible.builtin.file:
     path: /etc/etcd
     state: directory
 
-- name: Ensure etcd execution directories present
+- name: Creating execution directory
   ansible.builtin.file:
     path: /var/lib/etcd
     state: directory
     mode: '0744'
 
-- name: Upload certificate authority pem
+- name: Uploading certificate authority
   ansible.builtin.copy:
     src: "{{ lookup('env', 'HOME') }}/.kubernetes.pkis/ca.pem"
     dest: /etc/etcd
 
-- name: Upload kubernetes certificate private key
+- name: Uploading kubernetes certificate private key
   ansible.builtin.copy:
     src: "{{ lookup('env', 'HOME') }}/.kubernetes.pkis/kubernetes-key.pem"
     dest: /etc/etcd
 
-- name: Upload kubernetes certificate public key
+- name: Uploading kubernetes certificate public key
   ansible.builtin.copy:
     src: "{{ lookup('env', 'HOME') }}/.kubernetes.pkis/kubernetes.pem"
     dest: /etc/etcd
 
-- name: Upload etcd service unit file (systemd)
+- name: Uploading service unit file (systemd)
   ansible.builtin.template:
     src: etcd.service.j2
     dest: /etc/systemd/system/etcd.service
 
-- name: Start etcd service
+- name: Starting service (systemd)
   ansible.builtin.systemd:
     name: etcd
     daemon_reload: yes
     enabled: yes
     state: started
 
-- name: Ensure etcd is installed
+- name: Ensure etcd is installed (etcdctl)
   ansible.builtin.command: "etcdctl member list \
   --endpoints=https://127.0.0.1:2379 \
   --cacert=/etc/etcd/ca.pem \
