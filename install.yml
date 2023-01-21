@@ -6,6 +6,8 @@
   become: yes
   vars:
     playbook_mode: "install"
+  tags:
+    - test
   roles:
     - common
 
@@ -16,6 +18,8 @@
     kubernetes_public_ip: 192.168.1.1
     cluster_name: "yard-kubernetes"
     playbook_mode: "install"
+  tags:
+    - test
   roles:
     - docker
     - k8s-kubectl
