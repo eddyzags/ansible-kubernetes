@@ -45,3 +45,8 @@
     state: restarted
     daemon_reload: yes
     name: docker
+
+- name: Ensure docker is running
+  ansible.builtin.command: docker info
+  tags:
+    - test

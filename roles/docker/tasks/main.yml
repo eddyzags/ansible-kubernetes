@@ -4,6 +4,8 @@
   ansible.builtin.include_tasks:
     file: install.yml
   when: playbook_mode == "install"
+  tags:
+    - test
 
 - name: Executing uninstall tasks for docker
   ansible.builtin.include_tasks:
