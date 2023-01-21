@@ -4,3 +4,9 @@
   ansible.builtin.apt:
     name: "{{ apt_default_packages }}"
     state: present
+
+- name: Validating if the package are installed
+  ansible.builtin.command: dpkg -l --no-pager "{{ item }}"
+  with_items: "{{ apt_default_packages }}"
+  tags:
+    - test
