@@ -1,11 +1,11 @@
 ---
 
-- name: Executing install kube-apiserver tasks
+- name: Executing playbook mode install
   ansible.builtin.include_tasks:
     file: install.yml
   when: playbook_mode == "install"
 
-- name: Executing uninstall kube-apiserver tasks
+- name: Executing playbook mode uninstall
   ansible.builtin.include_tasks:
     file: uninstall.yml
   when: playbook_mode == "uninstall"
