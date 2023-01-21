@@ -75,6 +75,4 @@
     state: restarted
 
 - name: Ensure current kube-apiserver status
-  ansible.builtin.uri:
-    url: https://192.168.1.50:6443/livez
-    ca_path: "/var/lib/kubernetes/ca.pem"
+  ansible.builtin.command: curl --cacert /var/lib/kubernetes/ca.pem https://192.168.1.50:6443/livez

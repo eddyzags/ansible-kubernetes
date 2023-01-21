@@ -37,7 +37,8 @@
       - containerd.io
     state: present
     update_cache: true
-    retries: 3
+  retries: 3
+  delay: 2
 
 - name: Restart docker daemon
   ansible.builtin.systemd:
