@@ -1,5 +1,7 @@
 ---
 
+kube_worker_version: 1.21.0
+
 kube_worker_apt_dependencies:
   - "socat"
   - "conntrack"
