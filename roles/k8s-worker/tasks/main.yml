@@ -1,11 +1,11 @@
 ---
 
-- name: Download kube-worker apt dependencies
-  ansible.builtin.apt:
-    name: "{{ kube_worker_apt_packages }}"
-    state: present
+- name: Executing playbook mode install
+  ansible.builtin.include_tasks:
+    file: install.yml
+  when: playbook_mode == "install"
 
-- name: Disabling swap memory
-  ansible.builtin.command: "swapoff -a"
-
-- name: Downloading 
+- name: Executing playbook mode uninstall
+  ansible.builtin.include_tasks:
+    file: uninstall.yml
+  when: playbook_mode == "uninstall"
