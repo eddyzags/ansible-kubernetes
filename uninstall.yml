@@ -14,3 +14,4 @@
     - k8s-etcd
     - k8s-kubectl
     - k8s-scheduler
+    - k8s-worker

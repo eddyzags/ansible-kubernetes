@@ -2,13 +2,15 @@
 
 - name: Removing configuration and binary files
   ansible.builtin.file:
-    path: "{{ items }}"
+    path: "{{ item }}"
     state: absent
   with_items:
     - /usr/local/kubelet
     - /usr/local/kube-proxy
     - /var/lib/kubernetes/kubelet
     - /var/lib/kubernetes/kube-proxy
+    - /opt/cni
+    - /etc/cni
 
 - name: Re-enabling SWAP in fstab
   replace:
@@ -20,11 +22,11 @@
   ansible.builtin.command: swapon -a
 
 - name: Removing apt package dependencies
-    ansible.builtin.apt:
-      name: "{{ kube_worker_apt_dependencies }}"
-      state: absent
+  ansible.builtin.apt:
+    name: "{{ kube_worker_apt_dependencies }}"
+    state: absent
 
-- name: Shutting down kubelet service (systemd)
+- name: Shutting down kubelet and kube-proxy service (systemd)
   ansible.builtin.service:
     name: "{{ item }}"
     state: stopped
