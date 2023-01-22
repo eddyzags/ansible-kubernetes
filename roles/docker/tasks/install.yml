@@ -7,6 +7,7 @@
       - curl
       - gnupg
       - lsb-release
+      - conntrack
     state: present
 
 - name: Add apt key
@@ -40,11 +41,47 @@
   retries: 3
   delay: 2
 
+- name: Downloading cri-dockerd to control Docker via Kubernetes
+  ansible.builtin.get_url:
+    url: https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.0/cri-dockerd-0.3.0.amd64.tgz
+    dest: /tmp/
+
+- name: Unarchiving cri-dockerd tar.gz
+  ansible.builtin.unarchive:
+    src: "/tmp/cri-dockerd-0.3.0.amd64.tgz"
+    mode: 0755
+    dest: /tmp
+    remote_src: yes
+    owner: root
+    group: root
+
+- name: Copying cri-docker binary
+  ansible.builtin.copy:
+    src: "/tmp/cri-dockerd/cri-dockerd"
+    dest: /usr/bin/cri-dockerd
+    remote_src: yes
+
+- name: Copy cri-dockerd service configuratin file (systemd)
+  ansible.builtin.template:
+    src: cri-docker.service.j2
+    dest: /etc/systemd/system/cri-docker.service
+
+- name: Copy cri-dockerd socket configuratin file (systemd)
+  ansible.builtin.template:
+    src: cri-docker.socket.j2
+    dest: /etc/systemd/system/cri-docker.socket
+
 - name: Restarting docker daemon
   ansible.builtin.systemd:
     state: restarted
     daemon_reload: yes
     name: docker
+
+- name: Restarting cri-dockerd
+  ansible.builtin.systemd:
+    state: restarted
+    daemon_reload: yes
+    name: cri-docker
 
 - name: Ensure service is running
   ansible.builtin.command: docker info
