@@ -1,16 +1,16 @@
 {
-  "CN": "Kubernetes",
-  "key": {
-    "algo": "rsa",
-    "size": 2048
-  },
-  "names": [
-    {
-      "C": "FR",
-      "L": "Lille",
-      "O": "Kubernetes",
-      "OU": "CA",
-      "ST": "Nord"
-    }
-  ]
+    "CN": "Kubernetes",
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "FR",
+            "L": "Lille",
+            "O": "Kubernetes",
+            "OU": "CA",
+            "ST": "Nord"
+        }
+    ]
 }
