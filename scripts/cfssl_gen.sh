@@ -18,8 +18,6 @@ cfssl gencert \
       admin_csr.json | cfssljson -bare admin
 echo "Admin client certificate genreated.\n\n"
 
-exit 0
-
 # Generate kubelet client certificates
 c=0
 limit=`echo $1 | sed 's/[^,]//g' | awk '{ print length + 1 }'`
@@ -29,6 +27,8 @@ do
     workerName=`echo $1 | cut -d"," -f$((c+1)) | cut -d":" -f1`
     ip=`echo $1 | cut -d"," -f$((c+1)) | cut -d":" -f2`
 
+    echo "Generating $workerName certificate..."
+
     cat > "$workerName"-csr.json <<EOF
 {
   "CN": "system:node:$workerName",
@@ -37,7 +37,7 @@ do
     "size": 2048
   },
   "names": [
-n    {
+    {
       "C": "France",
       "L": "Lille",
       "O": "system:nodes",
@@ -55,27 +55,33 @@ EOF
           -profile=kubernetes \
           "$workerName"-csr.json | cfssljson -bare $workerName
 
+    echo "$workerName certificate done\n\n"
     c=$((c + 1))
 done
 
 # Generate kube-controller-manager certificate
+echo "Generating kube-controller-manager certificate..."
 cfssl gencert \
       -ca=ca.pem \
       -ca=ca-key.pem \
       -config=ca_config.json \
       -profile=kubernetes \
       kube_controller_manager_csr.json | cfssljson -bare kube-controller-manager
+echo "Kube-controller-manager certificate generated.\n\n"
 
 
 # Generate kube-proxy certificate
+echo "Generating kube-proxy certificate..."
 cfssl gencert \
       -ca=ca.pem \
       -ca-key=ca-key.pem \
       -config=ca_config.json \
       -profile=kubernetes \
       kube_proxy_csr.json | cfssljson -bare kube-proxy
+echo "kube-proxy certificate generated.\n\n"
 
 # Generate kube-apiserver certificate
+echo "Generating kube-apiserver certificate..."
 cfssl gencert \
       -ca=ca.pem \
       -ca-key=ca-key.pem \
@@ -83,11 +89,14 @@ cfssl gencert \
       -hostname=192.168.1.50,127.0.0.1,kubernetes,kubernetes.default,kubernetes.default.svc,kubernetes.default.svc.cluster,kubernetes.svc.cluster.local \
       -profile=kubernetes \
       kubernetes_csr.json | cfssljson -bare kubernetes
+echo "kube-apiserver certificate generated.\n\n."
 
 # Generate service account certificate
+echo "Generating service account certificate..."
 cfssl gencert \
       -ca=ca.pem \
       -ca-key=ca-key.pem \
       -config=ca-config.json \
       -profile=kubernetes \
       service_account_csr.json | cfssljson -bare service-account
+echo "service account certificate generated."
