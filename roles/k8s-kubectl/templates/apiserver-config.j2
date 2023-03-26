@@ -5,7 +5,7 @@ kind: ClusterConfiguration
 kubernetesVersion: v1.16.0
 apiServer:
   extraArgs:
-    advertise-address: {{ inventory_hostname.ansible_priv0.ipv4.address }}
+    advertise-address: {{ ansible_host }}
     anonymous-auth: "false"
     enable-admission-plugins: " {{ apiserver_enable_admission_plugins }} "
     audit-log-path: "{{ apiserver_audit_log_path }}"
