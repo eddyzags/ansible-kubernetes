@@ -1,6 +1,6 @@
 ---
 
-- name: Deprovisionning Kubernetes cluster default configuration
+- name: Deprovisionning Kubernetes cluster and common tools
   hosts: home
   gather_facts: no
   become: yes

@@ -74,5 +74,5 @@
     enabled: yes
     state: restarted
 
-- name: Ensure service is running GET - /livez
+- name: Ensuring that the service is running GET - /livez
   ansible.builtin.command: curl --cacert /var/lib/kubernetes/ca.pem https://192.168.1.50:6443/livez

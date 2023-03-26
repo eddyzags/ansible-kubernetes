@@ -6,7 +6,7 @@
     filename: apt_kubernetes_io
     state: absent
 
-- name: Removing binary (apt)
+- name: Removing kubectl binary (apt)
   ansible.builtin.apt:
     name: kubectl
     state: absent

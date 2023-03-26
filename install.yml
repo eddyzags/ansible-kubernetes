@@ -1,6 +1,6 @@
 ---
 
-- name: Provision Kubernetes cluster default configuration
+- name: Provisioning servers with common tools
   hosts: home
   gather_facts: no
   become: yes
@@ -9,7 +9,7 @@
   roles:
     - common
 
-- name: Provision Kubernetes cluster
+- name: Provisioning Kubernetes cluster
   hosts: home
   become: yes
   vars:
