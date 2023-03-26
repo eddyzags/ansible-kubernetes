@@ -1,7 +1,7 @@
 ---
 
 - name: Provisioning servers with common tools
-  hosts: home
+  hosts: single-node
   gather_facts: no
   become: yes
   vars:
@@ -10,7 +10,7 @@
     - common
 
 - name: Provisioning Kubernetes cluster
-  hosts: home
+  hosts: single-node
   become: yes
   vars:
     kubernetes_public_ip: 192.168.1.1
