@@ -1,2 +1,2 @@
 clean:
-	rm -r output
+	rm -rf output
