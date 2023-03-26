@@ -9,7 +9,7 @@
   roles:
     - common
     - docker
-    - k8s-api-server
+    - k8s-apiserver
     - k8s-controller-manager
     - k8s-etcd
     - k8s-kubectl
