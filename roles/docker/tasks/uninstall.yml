@@ -13,12 +13,12 @@
     path: "{{ configuration_folder_path }}"
     state: absent
 
-- name: Removing docker apt repository from configuration files
+- name: Removing docker repository from apt configuration file
   ansible.builtin.apt_repository:
     repo: 'deb [arch=amd64] https://download.docker.com/linux/{{ distribution }} {{ distribution_release }} stable'
     state: absent
 
-- name: Removing cri-docker configuration file (systemd)
+- name: Removing cri-docker configuration files (systemd)
   ansible.builtin.file:
     path: "{{ item }}"
     state: absent
@@ -31,7 +31,7 @@
     name: cri-docker
     state: stopped
 
-- name: Shutting down service
+- name: Shutting down docker service
   ansible.builtin.systemd:
     name: docker
     state: stopped

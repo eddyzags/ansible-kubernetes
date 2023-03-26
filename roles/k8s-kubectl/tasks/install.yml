@@ -34,7 +34,7 @@
     name: kubectl
     selection: hold
 
-- name: Ensure the binary is installed
+- name: Ensuring that kubectl is installed
   ansible.builtin.command: dpkg -l --no-pager kubectl
   tags:
     - test

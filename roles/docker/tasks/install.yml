@@ -10,22 +10,22 @@
       - conntrack
     state: present
 
-- name: Add apt key
+- name: Adding apt key
   ansible.builtin.apt_key:
     id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
     url: "https://download.docker.com/linux/{{ distribution }}/gpg"
 
-- name: Add GPG key
+- name: Adding GPG key
   ansible.builtin.apt_repository:
     repo: 'deb [arch=amd64] https://download.docker.com/linux/{{ distribution }} {{ distribution_release }} stable'
     state: present
     filename: docker
     update_cache: true
 
-- name: Creating configuration folder is present
+- name: Creating configuration folder
   file: path="{{ configuration_folder_path }}" state=directory
 
-- name: Adding configuration file
+- name: Adding daemon configuration file
   ansible.builtin.template:
     src: daemon.j2
     dest: "{{ configuration_folder_path }}/daemon.json"
@@ -55,18 +55,18 @@
     owner: root
     group: root
 
-- name: Copying cri-docker binary
+- name: Uploading cri-docker binary
   ansible.builtin.copy:
     src: "/tmp/cri-dockerd/cri-dockerd"
     dest: /usr/bin/cri-dockerd
     remote_src: yes
 
-- name: Copy cri-dockerd service configuratin file (systemd)
+- name: Uploading cri-dockerd service configuratin file (systemd)
   ansible.builtin.template:
     src: cri-docker.service.j2
     dest: /etc/systemd/system/cri-docker.service
 
-- name: Copy cri-dockerd socket configuratin file (systemd)
+- name: Uploading cri-dockerd socket configuratin file (systemd)
   ansible.builtin.template:
     src: cri-docker.socket.j2
     dest: /etc/systemd/system/cri-docker.socket
@@ -83,7 +83,7 @@
     daemon_reload: yes
     name: cri-docker
 
-- name: Ensure service is running
+- name: Ensuring that service is running
   ansible.builtin.command: docker info
   tags:
     - test

@@ -64,7 +64,7 @@
     enabled: yes
     state: started
 
-- name: Ensure etcd is installed (etcdctl)
+- name: Ensuring that the etcd service is installed (etcdctl)
   ansible.builtin.command: "etcdctl member list \
   --endpoints=https://127.0.0.1:2379 \
   --cacert=/etc/etcd/ca.pem \
