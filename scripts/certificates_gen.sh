@@ -26,7 +26,7 @@ cat > output/certs/config/ca_csr.json <<EOF
             "C": "FR",
             "L": "Lille",
             "O": "Kubernetes",
-            "OU": "CA",
+            "OU": "k8s",
             "ST": "Nord"
         }
     ]
@@ -65,10 +65,10 @@ cat > output/certs/config/admin_csr.json <<EOF
     },
     "names": [
         {
-            "C": "France",
+            "C": "FR",
             "L": "Lille",
             "O": "system:masters",
-            "OU": "CA",
+            "OU": "k8s",
             "ST": "Nord"
         }
     ]
@@ -103,10 +103,10 @@ do
  },
   "names": [
     {
-      "C": "France",
+      "C": "FR",
       "L": "Lille",
       "O": "system:nodes",
-      "OU": "Kubernetes The Hard Way",
+      "OU": "k8s",
       "ST": "Nord"
     }
   ]
@@ -136,10 +136,10 @@ cat > output/certs/config/kube_controller_manager_csr.json <<EOF
   },
   "names": [
     {
-      "C": "France",
+      "C": "FR",
       "L": "Lille",
       "O": "system:kube-controller-manager",
-      "OU": "Kubernetes The Hard Way",
+      "OU": "k8s",
       "ST": "Nord"
     }
   ]
@@ -167,10 +167,10 @@ cat > output/certs/config/kube_proxy_csr.json <<EOF
   },
   "names": [
     {
-      "C": "France",
+      "C": "FR",
       "L": "Lille",
       "O": "system:node-proxier",
-      "OU": "Kubernetes The Hard Way",
+      "OU": "k8s",
       "ST": "Nord"
     }
   ]
@@ -185,6 +185,37 @@ cfssl gencert \
       output/certs/config/kube_proxy_csr.json | output/cfssl/bin/cfssljson -bare -output output/certs kube-proxy
 echo "kube-proxy certificate generated.\n\n"
 
+
+echo "Generating kube-scheduler certificate..."
+
+cat > output/certs/config/kube-scheduler-csr.json <<EOF
+{
+  "CN": "system:kube-scheduler",
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "FR",
+      "L": "Lille",
+      "O": "system:kube-scheduler",
+      "OU": "k8s",
+      "ST": "Nord"
+    }
+  ]
+}
+EOF
+
+cfssl gencert \
+      -ca=output/certs/ca.pem \
+      -ca-key=output/certs/ca-key.pem \
+      -config=output/certs/config/ca_config.json \
+      -profile=kubernetes \
+      output/certs/config/kube-scheduler-csr.json | output/cfssl/bin/cfssljson -bare -output output/certs kube-scheduler
+
+echo "kube-scheduler certificate generated...\n\n"
+
 # Generate kube-apiserver certificate
 echo "Generating kube-apiserver certificate..."
 
@@ -198,9 +229,9 @@ cat > output/certs/config/kubernetes_csr.json <<EOF
     "names": [
         {
         "C": "FR",
-        "L": "France",
+        "L": "Lille",
         "O": "Kubernetes",
-        "OU": "Kubernetes The Hard Way",
+        "OU": "k8s",
         "ST": "Nord"
         }
     ]
@@ -211,7 +242,7 @@ cfssl gencert \
       -ca=output/certs/ca.pem \
       -ca-key=output/certs/ca-key.pem \
       -config=output/certs/config/ca_config.json \
-      -hostname=192.168.1.50,127.0.0.1,kubernetes,kubernetes.default,kubernetes.default.svc,kubernetes.default.svc.cluster,kubernetes.svc.cluster.local \
+      -hostname=192.168.121.243,127.0.0.1,buster,kubernetes,kubernetes.default,kubernetes.default.svc,kubernetes.default.svc.cluster,kubernetes.svc.cluster.local \
       -profile=kubernetes \
       output/certs/config/kubernetes_csr.json | output/cfssl/bin/cfssljson -bare -output output/certs kubernetes
 echo "kube-apiserver certificate generated.\n\n"
@@ -228,10 +259,10 @@ cat > output/certs/config/service_account_csr.json <<EOF
   },
   "names": [
     {
-      "C": "France",
+      "C": "FR",
       "L": "Lille",
       "O": "Kubernetes",
-      "OU": "Kubernetes The Hard Way",
+      "OU": "k8s",
       "ST": "Nord"
     }
   ]
