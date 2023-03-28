@@ -39,17 +39,17 @@
 
 - name: Uploading certificate authority
   ansible.builtin.copy:
-    src: "{{ lookup('env', 'HOME') }}/.kubernetes.pkis/ca.pem"
+    src: "ca.pem"
     dest: /etc/etcd
 
 - name: Uploading kubernetes certificate private key
   ansible.builtin.copy:
-    src: "{{ lookup('env', 'HOME') }}/.kubernetes.pkis/kubernetes-key.pem"
+    src: "kubernetes-key.pem"
     dest: /etc/etcd
 
 - name: Uploading kubernetes certificate public key
   ansible.builtin.copy:
-    src: "{{ lookup('env', 'HOME') }}/.kubernetes.pkis/kubernetes.pem"
+    src: "kubernetes.pem"
     dest: /etc/etcd
 
 - name: Uploading service unit file (systemd)
@@ -62,11 +62,15 @@
     name: etcd
     daemon_reload: yes
     enabled: yes
-    state: started
+    state: restarted
+
+- name: Waiting for the service startup
+  ansible.builtin.pause:
+    seconds: 5
 
 - name: Ensuring that the etcd service is installed (etcdctl)
   ansible.builtin.command: "etcdctl member list \
-  --endpoints=https://127.0.0.1:2379 \
+  --endpoints=https://{{ ansible_host }}:2379 \
   --cacert=/etc/etcd/ca.pem \
   --cert=/etc/etcd/kubernetes.pem \
   --key=/etc/etcd/kubernetes-key.pem"

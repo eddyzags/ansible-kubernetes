@@ -11,9 +11,9 @@ authorization:
   mode: Webhook
 clusterDomain: "cluster.local"
 clusterDNS:
-  - "192.168.1.253"
-podCIDR: "192.168.1.0/16"
+  - "{{ ansible_facts.dns.nameservers.0 }}"
+podCIDR: "{{ ansible_facts.eth0.ipv4.network }}/24"
 resolvConf: "/run/systemd/resolve/resolv.conf"
 runtimeRequestTimeout: "15m"
-tlsCertFile: "/var/lib/kubernetes/kubelet/worker-0.pem"
-tlsPrivateKeyFile: "/var/lib/kubernetes/kubelet/worker-0-key.pem"
+tlsCertFile: "/var/lib/kubernetes/kubelet/worker-1.pem"
+tlsPrivateKeyFile: "/var/lib/kubernetes/kubelet/worker-1-key.pem"

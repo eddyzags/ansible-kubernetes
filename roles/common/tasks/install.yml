@@ -4,9 +4,10 @@
   ansible.builtin.apt:
     name: "{{ apt_default_packages }}"
     state: present
+    force: true
 
 - name: Ensuring that the packages are installed
-  ansible.builtin.command: dpkg -l --no-pager "{{ item }}"
+  ansible.builtin.command: dpkg -l "{{ item }}"
   with_items: "{{ apt_default_packages }}"
   tags:
     - test

@@ -28,6 +28,7 @@
     name:
       - "kubectl"
     state: present
+    force: true
 
 - name: Preventing kubectl from being upgraded
   dpkg_selections:
