@@ -1,21 +1,25 @@
 ---
 
 - name: Provisioning servers with common tools
-  hosts: home
+  hosts: single-node
   gather_facts: no
   become: yes
   vars:
     playbook_mode: "install"
+    distribution: "debian"
+    distribution_release: "buster"
   roles:
     - common
 
 - name: Provisioning Kubernetes cluster
-  hosts: home
+  hosts: single-node
   become: yes
   vars:
     kubernetes_public_ip: 192.168.1.1
     cluster_name: "yard-kubernetes"
     playbook_mode: "install"
+    distribution: "debian"
+    distribution_release: "buster"
   roles:
     - docker
     - k8s-kubectl

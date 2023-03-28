@@ -8,7 +8,7 @@
     "ipam": {
         "type": "host-local",
         "ranges": [
-          [{"subnet": "192.168.1.0/16"}]
+          [{"subnet": "{{ ansible_facts.eth0.ipv4.network }}/16"}]
         ],
         "routes": [{"dst": "0.0.0.0/0"}]
     }

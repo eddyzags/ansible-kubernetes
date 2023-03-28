@@ -5,7 +5,7 @@ Documentation=https://github.com/coreos
 [Service]
 Type=notify
 ExecStart="/usr/local/bin/etcd" \
---name {{ ansible_hostname }} \
+--name {{ ansible_host }} \
 --heartbeat-interval=400 \
 --election-timeout=2000 \
 --data-dir=/var/lib/etcd \
@@ -17,12 +17,12 @@ ExecStart="/usr/local/bin/etcd" \
 --peer-trusted-ca-file=/etc/etcd/ca.pem \
 --peer-client-cert-auth \
 --client-cert-auth \
---initial-advertise-peer-urls https://{{ inventory_hostname }}:2380 \
---listen-peer-urls https://{{ inventory_hostname }}:2380 \
---listen-client-urls https://{{ inventory_hostname }}:2379,https://127.0.0.1:2379 \
---advertise-client-urls https://{{ inventory_hostname }}:2379 {% if vars['play_hosts']|length > 1 %}\
+--initial-advertise-peer-urls https://{{ ansible_host }}:2380 \
+--listen-peer-urls https://{{ ansible_host }}:2380 \
+--listen-client-urls https://{{ ansible_host }}:2379,https://127.0.0.1:2379 \
+--advertise-client-urls https://{{ ansible_host }}:2379 {% if vars['play_hosts']|length > 1 %}\
 --initial-cluster-token etcd-cluster-0 \
---initial-cluster {% for host in vars['play_hosts'] %}yard-1-{{loop.index}}=https://{{ host }}:2380{% if not loop.last %},{% endif %}{% endfor %} \
+--initial-cluster {% for host in vars['play_hosts'] %}buster-{{loop.index}}=https://{{ ansible_host }}:2380{% if not loop.last %},{% endif %}{% endfor %} \
 --initial-cluster-state new
 {% endif %}
 

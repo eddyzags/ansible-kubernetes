@@ -5,7 +5,7 @@ kind: ClusterConfiguration
 kubernetesVersion: v1.16.0
 controllerManager:
   extraArgs:
-    bind-address: "{{ inventory_hostname.ansible_priv0.ipv4.address }}"
+    bind-address: "{{ ansible_host }}"
     deployment-controller-sync-period: "{{ controller_manager_deployment_controller_sync_period }}"
     cluster-name: "{{ cluster_name }}"
     log-dir: "{{ controller_manager_log_dir }}"]

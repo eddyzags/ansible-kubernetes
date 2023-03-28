@@ -4,6 +4,7 @@
   ansible.builtin.apt:
     name: "{{ kube_worker_apt_dependencies }}"
     state: present
+    force: true
 
 - name: Downloading kubelet and kube-proxy
   ansible.builtin.get_url:
@@ -56,17 +57,17 @@
 
 - name: kubelet - Copying Certificate public key
   ansible.builtin.copy:
-    src: "{{ lookup('env', 'HOME') }}/.kubernetes.pkis/worker-0.pem"
+    src: "worker-1.pem"
     dest: "/var/lib/kubernetes/kubelet/"
 
 - name: kubelet - Copying Certificate private key
   ansible.builtin.copy:
-    src: "{{ lookup('env', 'HOME') }}/.kubernetes.pkis/worker-0-key.pem"
+    src: "worker-1-key.pem"
     dest: "/var/lib/kubernetes/kubelet/"
 
 - name: kubelet - Copying Certificate Authority public key
   ansible.builtin.copy:
-    src: "{{ lookup('env', 'HOME') }}/.kubernetes.pkis/ca.pem"
+    src: "ca.pem"
     dest: "/var/lib/kubernetes/"
 
 - name: kubelet - Copy kubelet configuration file
@@ -78,20 +79,20 @@
   ansible.builtin.command: "kubectl config set-cluster {{ cluster_name }} \
     --certificate-authority=/var/lib/kubernetes/ca.pem \
     --embed-certs=true \
-    --server=https://192.168.1.50:6443 \
+    --server=https://{{ ansible_host }}:6443 \
     --kubeconfig=/var/lib/kubernetes/kubelet/kubeconfig"
 
 - name: kubelet - Setting config credentials (kubectl config)
-  ansible.builtin.command: "kubectl config set-credentials system:node:worker-0 \
-    --client-certificate=/var/lib/kubernetes/kubelet/worker-0.pem \
-    --client-key=/var/lib/kubernetes/kubelet/worker-0-key.pem \
+  ansible.builtin.command: "kubectl config set-credentials system:node:worker-1 \
+    --client-certificate=/var/lib/kubernetes/kubelet/worker-1.pem \
+    --client-key=/var/lib/kubernetes/kubelet/worker-1-key.pem \
     --embed-certs=true \
     --kubeconfig=/var/lib/kubernetes/kubelet/kubeconfig"
 
 - name: kubelet - Setting config context (kubectl config)
   ansible.builtin.command: "kubectl config set-context default \
     --cluster={{ cluster_name }} \
-    --user=system:node:worker-0 \
+    --user=system:node:worker-1 \
     --kubeconfig=/var/lib/kubernetes/kubelet/kubeconfig"
 
 - name: kubelet - Setting config current context (kubectl config)
@@ -110,12 +111,12 @@
 
 - name: kube-proxy - Copying Certificate public key
   ansible.builtin.copy:
-    src: "{{ lookup('env', 'HOME') }}/.kubernetes.pkis/kube-proxy.pem"
+    src: "kube-proxy.pem"
     dest: "/var/lib/kubernetes/kube-proxy/cert.pem"
 
 - name: kube-proxy - Copying Certificate private key
   ansible.builtin.copy:
-    src: "{{ lookup('env', 'HOME') }}/.kubernetes.pkis/kube-proxy-key.pem"
+    src: "kube-proxy-key.pem"
     dest: "/var/lib/kubernetes/kube-proxy/cert-key.pem"
 
 - name: kube-proxy - Copy configuration file
@@ -132,7 +133,7 @@
   ansible.builtin.command: "kubectl config set-cluster {{ cluster_name }} \
     --certificate-authority=/var/lib/kubernetes/ca.pem \
     --embed-certs=true \
-    --server=https://192.168.1.50:6443 \
+    --server=https://{{ ansible_host }}:6443 \
     --kubeconfig=/var/lib/kubernetes/kube-proxy/kubeconfig"
 
 - name: kube-proxy - Setting config credentials (kubectl config)

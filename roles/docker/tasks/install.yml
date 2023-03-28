@@ -9,6 +9,7 @@
       - lsb-release
       - conntrack
     state: present
+    force: true
 
 - name: Adding apt key
   ansible.builtin.apt_key:
@@ -20,7 +21,6 @@
     repo: 'deb [arch=amd64] https://download.docker.com/linux/{{ distribution }} {{ distribution_release }} stable'
     state: present
     filename: docker
-    update_cache: true
 
 - name: Creating configuration folder
   file: path="{{ configuration_folder_path }}" state=directory
@@ -38,6 +38,7 @@
       - containerd.io
     state: present
     update_cache: true
+    force: true
   retries: 3
   delay: 2
 
@@ -59,6 +60,7 @@
   ansible.builtin.copy:
     src: "/tmp/cri-dockerd/cri-dockerd"
     dest: /usr/bin/cri-dockerd
+    mode: '0744'
     remote_src: yes
 
 - name: Uploading cri-dockerd service configuratin file (systemd)
@@ -82,6 +84,10 @@
     state: restarted
     daemon_reload: yes
     name: cri-docker
+
+- name: Waiting for the service startup
+  ansible.builtin.pause:
+    seconds: 5
 
 - name: Ensuring that service is running
   ansible.builtin.command: docker info

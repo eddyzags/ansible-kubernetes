@@ -18,17 +18,17 @@
 
 - name: Uploading certificate authority public key
   ansible.builtin.copy:
-    src: "{{ lookup('env', 'HOME') }}/.kubernetes.pkis/ca.pem"
+    src: "ca.pem"
     dest: "{{ kube_scheduler_config_path }}"
 
 - name: Uploading certificate
   ansible.builtin.copy:
-    src: "{{ lookup('env', 'HOME') }}/.kubernetes.pkis/kube-scheduler.pem"
+    src: "kube-scheduler.pem"
     dest: "{{ kube_scheduler_config_path }}"
 
 - name: Uploading certificate key
   ansible.builtin.copy:
-    src: "{{ lookup('env', 'HOME') }}/.kubernetes.pkis/kube-scheduler-key.pem"
+    src: "kube-scheduler-key.pem"
     dest: "{{ kube_scheduler_config_path }}"
 
 - name: Uploading service unit file (systemd)
@@ -40,7 +40,7 @@
   ansible.builtin.command: "kubectl config set-cluster {{ cluster_name }} \
     --certificate-authority={{ kube_scheduler_config_path }}/ca.pem \
     --embed-certs=true \
-    --server=https://192.168.1.50:6443 \
+    --server=https://{{ ansible_host }}:6443 \
     --kubeconfig={{ kube_scheduler_config_path }}/kube-scheduler.kubeconfig"
 
 - name: Setting config credentials (kubectl config)
@@ -67,8 +67,12 @@
     enabled: yes
     state: restarted
 
+- name: Waiting for the service startup
+  ansible.builtin.pause:
+    seconds: 5
+
 - name: Ensuring that kube-scheduler is running /healthz
   ansible.builtin.uri:
-    url: http://192.168.1.50:10251/healthz
+    url: "http://{{ ansible_host }}:10251/healthz"
   tags:
     - test
