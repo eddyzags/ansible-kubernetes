@@ -14,11 +14,17 @@
   with_items:
     - kube-proxy
     - kubelet
+  notify:
+    - "Restart kube-proxy service"
+    - "Restart kubelet service"
 
 - name: Downloading Container Network Interface (CNI)
   ansible.builtin.get_url:
     url: "https://github.com/containernetworking/plugins/releases/download/v0.9.1/cni-plugins-linux-amd64-v0.9.1.tgz"
     dest: '/tmp'
+  notify:
+    - "Restart kube-proxy service"
+    - "Restart kubelet service"
 
 - name: Creating Container Network Interface (CNI) binaries directory
   ansible.builtin.file:
@@ -40,11 +46,15 @@
   ansible.builtin.template:
     src: "cni-10-bridge.conf.j2"
     dest: "/etc/cni/net.d/10-bridge.conf"
+  notify:
+    - "Restart kubelet service"
 
 - name: kubelet - Copying Container Network Interface (CNI) loopback configuration
   ansible.builtin.template:
     src: "cni-99-loopback.conf.j2"
     dest: "/etc/cni/net.d/99-loopback.conf"
+  notify:
+    - "Restart kubelet service"
 
 - name: Disabling swap memory
   ansible.builtin.command: "swapoff -a"
@@ -59,21 +69,29 @@
   ansible.builtin.copy:
     src: "worker-1.pem"
     dest: "/var/lib/kubernetes/kubelet/"
+  notify:
+    - "Restart kubelet service"
 
 - name: kubelet - Copying Certificate private key
   ansible.builtin.copy:
     src: "worker-1-key.pem"
     dest: "/var/lib/kubernetes/kubelet/"
+  notify:
+    - "Restart kubelet service"
 
 - name: kubelet - Copying Certificate Authority public key
   ansible.builtin.copy:
     src: "ca.pem"
     dest: "/var/lib/kubernetes/"
+  notify:
+    - "Restart kubelet service"
 
 - name: kubelet - Copy kubelet configuration file
   ansible.builtin.template:
     src: "kubelet-config.yaml.j2"
     dest: "/var/lib/kubernetes/kubelet/config.yaml"
+  notify:
+    - "Restart kubelet service"
 
 - name: kubelet - Setting config cluster (kubectl config)
   ansible.builtin.command: "kubectl config set-cluster {{ cluster_name }} \
@@ -103,6 +121,8 @@
   ansible.builtin.template:
     src: "kubelet.service.j2"
     dest: "/etc/systemd/system/kubelet.service"
+  notify:
+    - "Restart kubelet service"
 
 - name: kube-proxy - Creating kube proxy directory
   ansible.builtin.file:
@@ -113,21 +133,29 @@
   ansible.builtin.copy:
     src: "kube-proxy.pem"
     dest: "/var/lib/kubernetes/kube-proxy/cert.pem"
+  notify:
+    - "Restart kube-proxy service"
 
 - name: kube-proxy - Copying Certificate private key
   ansible.builtin.copy:
     src: "kube-proxy-key.pem"
     dest: "/var/lib/kubernetes/kube-proxy/cert-key.pem"
+  notify:
+    - "Restart kube-proxy service"
 
 - name: kube-proxy - Copy configuration file
   ansible.builtin.template:
     src: "kube-proxy-config.yaml.j2"
     dest: "/var/lib/kubernetes/kube-proxy/config.yaml"
+  notify:
+    - "Restart kube-proxy service"
 
 - name: kube-proxy - Copy service configuration file (systemd)
   ansible.builtin.template:
     src: "kube-proxy.service.j2"
     dest: "/etc/systemd/system/kube-proxy.service"
+  notify:
+    - "Restart kube-proxy service"
 
 - name: kube-proxy - Setting config cluster (kubectl config)
   ansible.builtin.command: "kubectl config set-cluster {{ cluster_name }} \
@@ -156,20 +184,22 @@
 - name: Starting kubelet service (systemd)
   ansible.builtin.systemd:
     name: kubelet
-    state: restarted
+    state: started
     daemon_reload: yes
 
 - name: Starting kube-proxy service (systemd)
   ansible.builtin.systemd:
     name: kube-proxy
-    state: restarted
+    state: started
     daemon_reload: yes
+
+- name: Flush kube-proxy and kubelet handlers
+  ansible.builtin.meta: flush_handlers
 
 - name: Ensuring that kubelet is running
   ansible.builtin.command: "curl -X GET http://127.0.0.1:10248/"
   tags:
     - test
-
 
 - name: Ensuring that kube-proxy is running
   ansible.builtin.command: "curl -X GET http://{{ ansible_host }}:10256/"
