@@ -5,6 +5,8 @@
     url: "https://github.com/etcd-io/etcd/releases/download/v{{ etcd_version }}/etcd-v{{ etcd_version }}-linux-amd64.tar.gz"
     dest: /tmp
     mode: '0744'
+  notify:
+    - "Restart etcd service"
 
 - name: Unarchiving binary
   ansible.builtin.unarchive:
@@ -41,28 +43,39 @@
   ansible.builtin.copy:
     src: "ca.pem"
     dest: /etc/etcd
+  notify:
+    - "Restart etcd service"
 
 - name: Uploading kubernetes certificate private key
   ansible.builtin.copy:
     src: "kubernetes-key.pem"
     dest: /etc/etcd
+  notify:
+    - "Restart etcd service"
 
 - name: Uploading kubernetes certificate public key
   ansible.builtin.copy:
     src: "kubernetes.pem"
     dest: /etc/etcd
+  notify:
+    - "Restart etcd service"
 
 - name: Uploading service unit file (systemd)
   ansible.builtin.template:
     src: etcd.service.j2
     dest: /etc/systemd/system/etcd.service
+  notify:
+    - "Restart etcd service"
 
 - name: Starting service (systemd)
   ansible.builtin.systemd:
     name: etcd
     daemon_reload: yes
     enabled: yes
-    state: restarted
+    state: started
+
+- name: Flush etcd handlers
+  ansible.builtin.meta: flush_handlers
 
 - name: Waiting for the service startup
   ansible.builtin.pause:
