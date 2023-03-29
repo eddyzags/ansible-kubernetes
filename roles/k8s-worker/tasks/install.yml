@@ -167,3 +167,11 @@
 
 - name: Ensuring that kubelet is running
   ansible.builtin.command: "curl -X GET http://127.0.0.1:10248/"
+  tags:
+    - test
+
+
+- name: Ensuring that kube-proxy is running
+  ansible.builtin.command: "curl -X GET http://{{ ansible_host }}:10256/"
+  tags:
+    - test
