@@ -99,8 +99,8 @@
   ansible.builtin.pause:
     seconds: 5
 
-- name: Ensuring that the service is running GET - /healthz
+- name: Ensuring that the service is running GET - /livez
   ansible.builtin.uri:
-    url: "http://{{ ansible_host }}:10252/healthz"
+    url: "http://{{ ansible_host }}:10252/livez"
   tags:
     - test
