@@ -80,3 +80,5 @@
 
 - name: Ensuring that the service is running GET - /livez
   ansible.builtin.command: "curl --cacert /var/lib/kubernetes/ca.pem https://{{ ansible_host }}:6443/livez"
+  tags:
+    - test
