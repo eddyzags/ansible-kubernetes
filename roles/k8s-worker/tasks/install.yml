@@ -164,3 +164,6 @@
     name: kube-proxy
     state: restarted
     daemon_reload: yes
+
+- name: Ensuring that kubelet is running
+  ansible.builtin.command: "curl -X GET http://127.0.0.1:10248/"
