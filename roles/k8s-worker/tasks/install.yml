@@ -196,6 +196,10 @@
 - name: Flush kube-proxy and kubelet handlers
   ansible.builtin.meta: flush_handlers
 
+- name: Waiting for the services startup
+  ansible.builtin.pause:
+    seconds: 5
+
 - name: Ensuring that kubelet is running
   ansible.builtin.command: "curl -X GET http://127.0.0.1:10248/"
   tags:
