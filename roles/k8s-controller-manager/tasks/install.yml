@@ -5,6 +5,8 @@
     url: "https://storage.googleapis.com/kubernetes-release/release/v{{ kube_controller_manager_version }}/bin/linux/amd64/kube-controller-manager"
     dest: "/usr/local/bin/"
     mode: '0744'
+  notify:
+    - "Restart kube-controller-manager service"
 
 - name: Creating configuration directory
   ansible.builtin.file:
@@ -20,27 +22,36 @@
   ansible.builtin.copy:
     src: "ca.pem"
     dest: "{{ kube_controller_manager_config_path }}"
+  notify:
+    - "Restart kube-controller-manager service"
 
 - name: Uploading certificate authority private key
   ansible.builtin.copy:
     src: "ca-key.pem"
     dest: "{{ kube_controller_manager_config_path }}"
-
+  notify:
+    - "Restart kube-controller-manager service"
 
 - name: Uploading certificate private key
   ansible.builtin.copy:
     src: "kube-controller-manager-key.pem"
     dest: "{{ kube_controller_manager_config_path }}"
+  notify:
+    - "Restart kube-controller-manager service"
 
 - name: Uploading certificate public key
   ansible.builtin.copy:
     src: "kube-controller-manager.pem"
     dest: "{{ kube_controller_manager_config_path }}"
+  notify:
+    - "Restart kube-controller-manager service"
 
 - name: Uploading service account key pair
   ansible.builtin.copy:
     src: "service-account-key.pem"
     dest: "{{ kube_controller_manager_config_path }}"
+  notify:
+    - "Restart kube-controller-manager service"
 
 - name: Setting cluster config (kubectl config)
   ansible.builtin.command: "kubectl config set-cluster {{ cluster_name }} \
@@ -71,13 +82,18 @@
   ansible.builtin.template:
     src: kube-controller-manager.j2
     dest: /etc/systemd/system/kube-controller-manager.service
+  notify:
+    - "Restart kube-controller-manager service"
 
 - name: Starting service (systemd)
   ansible.builtin.systemd:
     name: kube-controller-manager
     daemon_reload: yes
     enabled: yes
-    state: restarted
+    state: started
+
+- name: Flush kube-controller-manager handlers
+  ansible.builtin.meta: flush_handlers
 
 - name: Waiting for the service startup
   ansible.builtin.pause:
