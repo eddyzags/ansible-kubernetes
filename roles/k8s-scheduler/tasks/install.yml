@@ -5,6 +5,8 @@
     url: "https://storage.googleapis.com/kubernetes-release/release/v{{ kube_scheduler_version }}/bin/linux/amd64/kube-scheduler"
     dest: "/usr/local/bin"
     mode: '0744'
+  notify:
+    - "Restart kube-scheduler service"
 
 - name: Creating configuration file directory
   ansible.builtin.file:
@@ -15,26 +17,36 @@
   ansible.builtin.template:
     src: kube-scheduler.yaml.j2
     dest: "{{ kube_scheduler_config_path }}/kube-scheduler.yaml"
+  notify:
+    - "Restart kube-scheduler service"
 
 - name: Uploading certificate authority public key
   ansible.builtin.copy:
     src: "ca.pem"
     dest: "{{ kube_scheduler_config_path }}"
+  notify:
+    - "Restart kube-scheduler service"
 
 - name: Uploading certificate
   ansible.builtin.copy:
     src: "kube-scheduler.pem"
     dest: "{{ kube_scheduler_config_path }}"
+  notify:
+    - "Restart kube-scheduler service"
 
 - name: Uploading certificate key
   ansible.builtin.copy:
     src: "kube-scheduler-key.pem"
     dest: "{{ kube_scheduler_config_path }}"
+  notify:
+    - "Restart kube-scheduler service"
 
 - name: Uploading service unit file (systemd)
   ansible.builtin.template:
     src: kube-scheduler.service.j2
     dest: /etc/systemd/system/kube-scheduler.service
+  notify:
+    - "Restart kube-scheduler service"
 
 - name: Setting config cluster (kubectl config)
   ansible.builtin.command: "kubectl config set-cluster {{ cluster_name }} \
@@ -65,7 +77,10 @@
     name: kube-scheduler
     daemon_reload: yes
     enabled: yes
-    state: restarted
+    state: started
+
+- name: Flush k8s-scheduler handlers
+  ansible.builtin.meta: flush_handlers
 
 - name: Waiting for the service startup
   ansible.builtin.pause:
