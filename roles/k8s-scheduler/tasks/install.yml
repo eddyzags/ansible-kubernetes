@@ -86,8 +86,8 @@
   ansible.builtin.pause:
     seconds: 5
 
-- name: Ensuring that kube-scheduler is running /livez
+- name: Ensuring that kube-scheduler is running /healthz
   ansible.builtin.uri:
-    url: "http://{{ ansible_host }}:10251/livez"
+    url: "http://{{ ansible_host }}:10251/healthz"
   tags:
     - test
