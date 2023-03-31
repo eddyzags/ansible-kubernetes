@@ -62,7 +62,7 @@ Vagrant.configure("2") do |config|
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update
-    apt install --force-yes -y htop
+    apt install -y htop
     SHELL
 
   config.vm.provision "ansible" do |ansible|
