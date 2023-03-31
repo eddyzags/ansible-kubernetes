@@ -205,7 +205,7 @@
   tags:
     - test
 
-- name: Ensuring that kube-proxy is running
-  ansible.builtin.command: "curl -X GET http://{{ ansible_host }}:10256/"
+- name: Ensuring that kube-proxy is running /healthz
+  ansible.builtin.command: "curl -X GET http://127.0.0.1:10256/healthz"
   tags:
     - test
