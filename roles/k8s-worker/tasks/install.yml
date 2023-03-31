@@ -200,8 +200,8 @@
   ansible.builtin.pause:
     seconds: 5
 
-- name: Ensuring that kubelet is running
-  ansible.builtin.command: "curl -X GET http://127.0.0.1:10248/"
+- name: Ensuring that kubelet is running /healthz
+  ansible.builtin.command: "curl -X GET http://127.0.0.1:10248/healthz"
   tags:
     - test
 
