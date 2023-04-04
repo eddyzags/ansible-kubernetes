@@ -6,7 +6,7 @@ This repository implements the infrastructure as a code to automate the deployme
 
 ![Ansible Kubernetes schema](./docs/img/ansible-kubernetes-schema.png)
 
-Ansible-Kubernetes provides several key features:
+`ansible-Kubernetes` provides several key features:
 
 * **Infrastructure as a code** to deploy a Kubernetes cluster composed of a control plane (`kube-apiserver`, `kube-scheduler`, `kube-controller-manager`, and `etcd`), and workers nodes (`kubelet`, `kube-proxy`, and `docker`).
 
@@ -18,8 +18,13 @@ Ansible-Kubernetes provides several key features:
 
 * **Testing playbook** to ensure the proper execution of the Ansible provisionnement.
 
-* **Vagrant support** to test the Ansible-Kubernetes provisionnement locally.
+* **Vagrant support** to test the `ansible-kubernetes` provision locally.
 
 ## Why?
 
-Ansible-kubernetes is optimized for learning purposes. Even though being able to provision a production environment is defined as a constraint for the implementation of this solution, you should rely on a more reliable tool to automate the deployment of a Kubernetes cluster, such as [kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/).
+`ansible-kubernetes` is optimized for learning purposes. Even though being able to provision a production environment is defined as a constraint for the implementation of this solution, you should rely on a more reliable tool to automate the deployment of a Kubernetes cluster, such as [kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/).
+
+## Who?
+
+This `ansible-kubernetes` playbook can be useful for IT professionals, developers who just want to experiment, or get familiar with a Kubernetes cluster.
+For example, I am using this playbook to provision my homelab sandbox where I can break things without too much consequences.
