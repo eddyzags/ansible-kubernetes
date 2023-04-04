@@ -6,16 +6,16 @@ This repository implements the infrastructure as a code to automate the deployme
 
 ![Ansible Kubernetes schema](./docs/img/ansible-kubernetes-schema.png)
 
-Ansible-Kubernetes provides several key feaures:
+Ansible-Kubernetes provides several key features:
 
-* **Infrastructure as a code** to deploy a Kubernets cluster who is composed of a control plane (`kube-apiserver`, `kube-scheduler`, `kube-controller-manager`, and `etcd`), and workers nodes (`kubelet`, `kube-proxy`, and `docker`).
+* **Infrastructure as a code** to deploy a Kubernetes cluster composed of a control plane (`kube-apiserver`, `kube-scheduler`, `kube-controller-manager`, and `etcd`), and workers nodes (`kubelet`, `kube-proxy`, and `docker`).
 
-* **Single node deployment** to provision all the components (control plane & worker node) in a single server (Bare metal, VM or a container) based on the Ansible inventory group.
+* **Single node deployment** to provision all the components (control plane & worker node) in a single server (Bare metal, VM, or a container) based on the Ansible inventory group.
 
-* **Multi node deployment** to provision all the components in multiple servers.
+* **Multi-node deployment** to provision all the components in multiple servers.
 
-* **Public key infrastructure (PKI)** to automate the generation of certificates for every components.
+* **Public key infrastructure (PKI)** to automate the generation of certificates for every component.
 
-* **Testing playbook** to ensure that the provision has been executed properly.
+* **Testing playbook** to ensure the proper execution of the Ansible provisionnement.
 
 * **Vagrant support** to test the Ansible-Kubernetes provisionnement locally.
