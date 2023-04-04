@@ -19,3 +19,7 @@ Ansible-Kubernetes provides several key features:
 * **Testing playbook** to ensure the proper execution of the Ansible provisionnement.
 
 * **Vagrant support** to test the Ansible-Kubernetes provisionnement locally.
+
+## Why?
+
+Ansible-kubernetes is optimized for learning purposes. Even though being able to provision a production environment is defined as a constraint for the implementation of this solution, you should rely on a more reliable tool to automate the deployment of a Kubernetes cluster, such as [kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/).
