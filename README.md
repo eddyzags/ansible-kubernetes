@@ -28,3 +28,23 @@ This repository implements the infrastructure as a code to automate the deployme
 
 This `ansible-kubernetes` playbook can be useful for IT professionals, developers who just want to experiment, or get familiar with a Kubernetes cluster.
 For example, I am using this playbook to provision my homelab sandbox where I can break things without too much consequences.
+
+## How?
+
+### Provisioning
+
+#### Install dependencies
+
+#### Generate certificates
+
+#### Single node
+
+#### Multi-node
+
+### Deprovisioning
+
+### Testing
+
+#### Provision using Vagrant
+
+#### Testing provision
