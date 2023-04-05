@@ -6,7 +6,7 @@ This repository implements the infrastructure as a code to automate the deployme
 
 ![Ansible Kubernetes schema](./docs/img/ansible-kubernetes-schema.png)
 
-`ansible-Kubernetes` provides several key features:
+`ansible-kubernetes` provides several key features:
 
 * **Infrastructure as a code** to deploy a Kubernetes cluster composed of a control plane (`kube-apiserver`, `kube-scheduler`, `kube-controller-manager`, and `etcd`), and workers nodes (`kubelet`, `kube-proxy`, and `docker`).
 
