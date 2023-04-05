@@ -26,7 +26,7 @@ This repository implements the infrastructure as a code to automate the deployme
 
 ## Who?
 
-This `ansible-kubernetes` playbook can be useful for IT professionals, developers who just want to experiment, or get familiar with a Kubernetes cluster.
+This `ansible-kubernetes` playbook can be useful for IT operators, or developers who just want to experiment, or get familiar with a Kubernetes cluster.
 For example, I am using this playbook to provision my homelab sandbox where I can break things without too much consequences.
 
 ## How?
@@ -35,11 +35,11 @@ For example, I am using this playbook to provision my homelab sandbox where I ca
 
 #### Installing dependencies
 
-This section contains information on the requirements of `ansible-kubernetes` for the provision to function properly. To make it more smooth, the `./scripts/deps_install.sh` is implemented to install dependencies required by the `ansible-kubernetes` project. The script creates a `./output` folder to produce all the necessary software.
+This section contains information on the requirements of `ansible-kubernetes` for the provision to function properly. To make it more smooth, the `./scripts/deps_install.sh` sh script is implemented to install dependencies required by the `ansible-kubernetes` project. The script creates a `./output` folder to produce all the necessary software.
 
 List of dependencies:
 
-* `cfssljson`: A patch version with an additinal feature to output the certificate in a specific folder [see feature pull request](https://github.com/cloudflare/cfssl/pull/1278)
+* `cfssljson`: A patch version with an additinal feature to output the certificates in a specific folder ([see feature pull request](https://github.com/cloudflare/cfssl/pull/1278))
 
 Example usage:
 ```bash
