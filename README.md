@@ -58,9 +58,26 @@ Example usage:
 $> ./script/certificates_gen.sh worker-0:192.168.1.1,worker-1:192.168.1.2,worker-3:192.168.1.2
 ```
 
-#### Single node
+#### Single node provisionning
 
-#### Multi-node
+Single node provisionning implements a mode to deploy all the Kubernetes components in a single server (Bare metal, container, or VM). This can be useful if your resources are limited, and you just want to spin up a Kubernetes quickly to experiment with it.
+
+First of all, you'll need to specifify one IP address in which the Ansible agent will ssh in the inventory file:
+
+```bash
+[single-node]
+192.169.1.2
+```
+
+Then, once the inventory is configured properly, you can start the provisionning by using the command below:
+
+```bash
+$> ansibe-playbook install.yml
+```
+
+#### Multi-node provisionning
+
+_Work in progress_
 
 ### Deprovisioning
 
