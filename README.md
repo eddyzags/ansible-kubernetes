@@ -35,7 +35,7 @@ For example, I am using this playbook to provision my homelab sandbox where I ca
 
 #### Installing dependencies
 
-This section contains information on the requirements of `ansible-kubernetes` for the provision to function properly. To make it more smooth, the `./scripts/deps_install.sh` sh script is implemented to install dependencies required by the `ansible-kubernetes` project. The script creates a `./output` folder to produce all the necessary software.
+This section contains information on the requirements of `ansible-kubernetes` for the provision to function properly. To make it smooth, the `./scripts/deps_install.sh` sh script is implemented to install dependencies required by the `ansible-kubernetes` project. The script creates a `./output` folder to produce all the necessary software.
 
 List of dependencies:
 
@@ -46,7 +46,17 @@ Example usage:
 $> ./scripts/deps_install.sh
 ```
 
-#### Generate certificates
+#### Generate Transport Layer Security (TLS) certificates
+
+In order to ensure a private communication between the different Kubernetes components, we will need to create a Private Key Infrastructure (PKI) using CloudFlare's PKI toolkit, `cfssl`. Then, use it to bootstrap a Certificate Authority (CA), and generate multiple Transport Layer Security (TLS) certificates for the following components: `kube-apiserver`, `kube-controller-manager`, `kube-scheduler`, `kubelet`, `kube-proxy`, `etcd`.
+The `./scripts/certificates_gen.sh` sh script can be use to automate the certificates generation. This certificates will be output in the `./output/certs` folder.
+
+> The ansible role will automatically know that the according certificates will remains in the ./output/certs folder.
+
+Example usage:
+```bash
+$> ./script/certificates_gen.sh worker-0:192.168.1.1,worker-1:192.168.1.2,worker-3:192.168.1.2
+```
 
 #### Single node
 
