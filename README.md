@@ -81,6 +81,13 @@ _Work in progress_
 
 ### Deprovisioning
 
+Once you don't need the Kubernetes cluster, you might need to shutdown, and remove, all the applications and configuration files related to the `ansible-kubernetes` project on your remote servers. In this case, the `uninstall.yml` playbook is implemented for this specific use case. It doesn't matter if you are in a single or multi node provisionning, the Ansible agent will ssh through every remote hosts, then execute the according task to remove every traces of the Kubernetes cluster.
+
+Example usage:
+```bash
+$> ansible-playbook uninstall.yml
+```
+
 ### Testing
 
 #### Provision using Vagrant
