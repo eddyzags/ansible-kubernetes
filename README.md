@@ -108,3 +108,8 @@ The `install.yml` playbook provides a way to test the deployment of the your Kub
 ```bash
 $> ansible-playbook install.yml --tags test
 ```
+
+### References
+
+* [Kubernetes The Hard Way Github repository](https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/04-certificate-authority.md)
+* [Ansible documentation](docs.ansible.com)
