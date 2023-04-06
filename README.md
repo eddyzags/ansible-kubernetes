@@ -20,6 +20,8 @@ This repository implements the infrastructure as a code to automate the deployme
 
 * **Vagrant support** to test the `ansible-kubernetes` provision locally.
 
+* **Deprovisioning** to remove every traces produced by the `ansible-kubernetes` project.
+
 ## Why?
 
 `ansible-kubernetes` is optimized for learning purposes. Even though being able to provision a production environment is defined as a constraint for the implementation of this solution, you should rely on a more reliable tool to automate the deployment of a Kubernetes cluster, such as [kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/).
@@ -91,5 +93,12 @@ $> ansible-playbook uninstall.yml
 ### Testing
 
 #### Provision using Vagrant
+
+The combinaison of Ansible and Vagrant is powerful when it comes to spin off virtual machines to test your Ansible playbook. We can seemlessly instruct Vagrant to execute an Ansible playbook once the virtual machines are up and running.
+
+Example usage:
+```bash
+$> vagrant up
+```
 
 #### Testing provision
