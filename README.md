@@ -102,3 +102,9 @@ $> vagrant up
 ```
 
 #### Testing provision
+
+The `install.yml` playbook provides a way to test the deployment of the your Kubernetes cluster. It will make sure that the service are up and running using reliable methods (Example for the Kubernetes components: query `/livez` `/healthz` or `/readyz` http endpoints)
+
+```bash
+$> ansible-playbook install.yml --tags test
+```
