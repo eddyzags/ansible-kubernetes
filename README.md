@@ -50,10 +50,9 @@ $> ./scripts/deps_install.sh
 
 #### Generate Transport Layer Security (TLS) certificates
 
-In order to ensure a private communication between the different Kubernetes components, we will need to create a Private Key Infrastructure (PKI) using CloudFlare's PKI toolkit, `cfssl`. Then, use it to bootstrap a Certificate Authority (CA), and generate multiple Transport Layer Security (TLS) certificates for the following components: `kube-apiserver`, `kube-controller-manager`, `kube-scheduler`, `kubelet`, `kube-proxy`, `etcd`.
-The `./scripts/certificates_gen.sh` sh script can be use to automate the certificates generation. This certificates will be output in the `./output/certs` folder.
+To ensure private communication between the Kubernetes components, we must create a Private Key Infrastructure (PKI) using CloudFlare's PKI toolkit, `cfssl`. Then, use it to bootstrap a Certificate Authority (CA) and generate multiple Transport Layer Security (TLS) certificates for the following components: `kube-apiserver`, `kube-controller-manager`, `kube-scheduler`, `kubelet`, `kube-proxy`, `etcd`. The `./scripts/certificates_gen.sh` sh script can be used to automate the certificate generation. The certificates will be output in the `./output/certs` folder.
 
-> The ansible role will automatically know that the according certificates will remains in the ./output/certs folder.
+> The ansible roles will automatically know that the according certificates are in the `./output/certs` folder.
 
 Example usage:
 ```bash
@@ -62,17 +61,16 @@ $> ./script/certificates_gen.sh worker-0:192.168.1.1,worker-1:192.168.1.2,worker
 
 #### Single node provisionning
 
-Single node provisionning implements a mode to deploy all the Kubernetes components in a single server (Bare metal, container, or VM). This can be useful if your resources are limited, and you just want to spin up a Kubernetes quickly to experiment with it.
+Single node provisioning implements a mode to deploy all the Kubernetes components in a single server (Bare metal, container, or VM). This can be useful if your resources are limited, and you want to spin up a Kubernetes quickly to experiment.
 
-First of all, you'll need to specifify one IP address in which the Ansible agent will ssh in the inventory file:
+First of all, you'll need to specify one IP address in which the Ansible agent will ssh in the inventory file:
 
 ```bash
 [single-node]
 192.169.1.2
 ```
 
-Then, once the inventory is configured properly, you can start the provisionning by using the command below:
-
+Then, once the inventory is configured correctly, you can start the provisioning using the command below:
 ```bash
 $> ansibe-playbook install.yml
 ```
@@ -83,7 +81,7 @@ _Work in progress_
 
 ### Deprovisioning
 
-Once you don't need the Kubernetes cluster, you might need to shutdown, and remove, all the applications and configuration files related to the `ansible-kubernetes` project on your remote servers. In this case, the `uninstall.yml` playbook is implemented for this specific use case. It doesn't matter if you are in a single or multi node provisionning, the Ansible agent will ssh through every remote hosts, then execute the according task to remove every traces of the Kubernetes cluster.
+Once you don't need the Kubernetes cluster, you might need to shut down and remove all the applications and configuration files related to the `ansible-kubernetes` project on your remote servers. In this case, the `uninstall.yml` playbook is implemented for this specific use case. It doesn't matter if you are in a single or multi node provisionning, the Ansible agent will ssh through every remote hosts, then execute the according task to remove every traces of the Kubernetes cluster.
 
 Example usage:
 ```bash
@@ -94,7 +92,7 @@ $> ansible-playbook uninstall.yml
 
 #### Provision using Vagrant
 
-The combinaison of Ansible and Vagrant is powerful when it comes to spin off virtual machines to test your Ansible playbook. We can seemlessly instruct Vagrant to execute an Ansible playbook once the virtual machines are up and running.
+The combination of Ansible and Vagrant is powerful when spinning off virtual machines to test your Ansible playbook. We can seamlessly instruct Vagrant to execute an Ansible playbook once the virtual machines run.
 
 Example usage:
 ```bash
@@ -103,7 +101,7 @@ $> vagrant up
 
 #### Testing provision
 
-The `install.yml` playbook provides a way to test the deployment of the your Kubernetes cluster. It will make sure that the service are up and running using reliable methods (Example for the Kubernetes components: query `/livez` `/healthz` or `/readyz` http endpoints)
+The `install.yml` playbook provides a way to test the deployment of your Kubernetes cluster. It will make sure that the service is up and running using reliable methods (Example for the Kubernetes components: query `/livez` `/healthz` or `/readyz` http endpoints).
 
 ```bash
 $> ansible-playbook install.yml --tags test
