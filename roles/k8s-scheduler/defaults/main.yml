@@ -1,4 +1,4 @@
 ---
 
-kube_scheduler_version: 1.21.0
+kube_scheduler_version: 1.26.0
 kube_scheduler_config_path: "/etc/kubernetes/kube-scheduler"

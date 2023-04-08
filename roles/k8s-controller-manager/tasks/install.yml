@@ -100,7 +100,6 @@
     seconds: 5
 
 - name: Ensuring that the service is running GET - /healthz
-  ansible.builtin.uri:
-    url: "http://{{ ansible_host }}:10252/healthz"
+  ansible.builtin.command: "curl --cacert /var/lib/kubernetes/ca.pem https://{{ ansible_host }}:10257/healthz"
   tags:
     - test

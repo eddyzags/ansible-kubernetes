@@ -1,6 +1,6 @@
 ---
 
-kube_controller_manager_version: 1.21.0
+kube_controller_manager_version: 1.26.0
 kube_controller_manager_config_path: "/etc/kubernetes/kube-controller-manager"
 service_cluster_ip_range: "{{ ansible_facts.eth0.ipv4.network }}/24"
 leader_elect: true
