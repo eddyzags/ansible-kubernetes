@@ -201,7 +201,7 @@
     seconds: 8
 
 - name: Ensuring that kubelet is running /healthz
-  ansible.builtin.command: "curl -X GET http://127.0.0.1:10248/healthz"
+  ansible.builtin.command: "curl --cacert /var/lib/kubernetes/ca.pem https://{{ ansible_host }}:10259/healthz"
   tags:
     - test
 

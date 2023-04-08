@@ -87,7 +87,6 @@
     seconds: 5
 
 - name: Ensuring that kube-scheduler is running /healthz
-  ansible.builtin.uri:
-    url: "http://{{ ansible_host }}:10251/healthz"
+  ansible.builtin.command: "curl --cacert /var/lib/kubernetes/ca.pem https://{{ ansible_host }}:10259/healthz"
   tags:
     - test
