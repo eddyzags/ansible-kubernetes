@@ -1,8 +1,11 @@
 {
   "exec-opts": ["native.cgroupdriver={{default_cgroup_driver}}"],
   "log-driver": "{{log_driver}}",
+  "features": { "buildkit": true } ,
+  "experimental": true,
   "log-opts": {
     "max-size": "{{log_max_size}}"
   },
-  "storage-driver": "{{storage_driver}}"
+  "storage-driver": "{{storage_driver}}",
+  "cgroup-parent": "docker.slice"
 }
