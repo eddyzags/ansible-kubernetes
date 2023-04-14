@@ -7,13 +7,9 @@ Requires=docker.service
 [Service]
 ExecStart=/usr/local/bin/kubelet \
   --config=/var/lib/kubernetes/kubelet/config.yaml \
-  --container-runtime=remote \
   --container-runtime-endpoint=unix:///var/run/cri-dockerd.sock \
   --kubeconfig=/var/lib/kubernetes/kubelet/kubeconfig \
-  --register-node=true \ 
   --hostname-override=worker-1 \
-  --tls-cert-file=/var/lib/kubernetes/kubernetes.pem \
-  --tls-private-key-file=/var/lib/kubernetes/kubernetes-key.pem \
   --v=2
 Restart=on-failure
 RestartSec=5

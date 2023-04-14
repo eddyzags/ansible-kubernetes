@@ -1,7 +1,7 @@
 ---
 
 - name: Deprovisionning Kubernetes cluster and common tools
-  hosts: home
+  hosts: single-node
   gather_facts: no
   become: yes
   vars:
