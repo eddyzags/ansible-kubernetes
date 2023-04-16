@@ -116,7 +116,7 @@ EOF
           -ca=output/certs/ca.pem \
           -ca-key=output/certs/ca-key.pem \
           -config=output/certs/config/ca_config.json \
-          -hostname=$ip \
+          -hostname=$ip,$workerName \
           -profile=kubernetes \
           output/certs/config/"$workerName"_csr.json | output/cfssl/bin/cfssljson -bare -output output/certs $workerName
 
