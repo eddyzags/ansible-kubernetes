@@ -12,7 +12,7 @@ authorization:
 clusterDomain: "cluster.local"
 clusterDNS:
   - "{{ ansible_facts.dns.nameservers.0 }}"
-podCIDR: "{{ ansible_facts.default_ipv4.network }}/24"
+podCIDR: "{{ cluster_cidr }}"
 resolvConf: "/etc/resolv.conf"
 runtimeRequestTimeout: "15m"
 tlsCertFile: "/var/lib/kubernetes/kubelet/worker-1.pem"

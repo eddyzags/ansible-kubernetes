@@ -16,6 +16,7 @@
   become: yes
   vars:
     kubernetes_public_ip: 192.168.1.1
+    cluster_cidr: 10.0.2.0/24
     cluster_name: "yard-kubernetes"
     playbook_mode: "install"
     distribution: "debian"

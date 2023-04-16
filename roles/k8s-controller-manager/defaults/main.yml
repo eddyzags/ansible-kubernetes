@@ -2,9 +2,8 @@
 
 kube_controller_manager_version: 1.26.0
 kube_controller_manager_config_path: "/etc/kubernetes/kube-controller-manager"
-service_cluster_ip_range: "{{ ansible_facts.default_ipv4.network }}/24"
+service_cluster_ip_range: "{{ cluster_cidr }}"
 leader_elect: true
-cluster_cidr: "{{ ansible_facts.default_ipv4.network }}/24"
 bind_address: 0.0.0.0
 use_service_account_credentials: true
 log_level_verbosity: 2
