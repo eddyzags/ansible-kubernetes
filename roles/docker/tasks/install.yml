@@ -38,7 +38,6 @@
       - containerd.io
     state: present
     update_cache: true
-    force: true
   retries: 3
   delay: 2
 
