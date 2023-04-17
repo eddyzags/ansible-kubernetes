@@ -11,7 +11,7 @@ authorization:
   mode: Webhook
 clusterDomain: "cluster.local"
 clusterDNS:
-  - "{{ ansible_facts.dns.nameservers.0 }}"
+  - "{{ cluster_dns_ip }}"
 podCIDR: "{{ cluster_cidr }}"
 resolvConf: "/etc/resolv.conf"
 runtimeRequestTimeout: "15m"
