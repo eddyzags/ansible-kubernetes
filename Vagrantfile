@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "debian/buster64"
+  config.vm.box = "debian/bullseye64"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -50,9 +50,9 @@ Vagrant.configure("2") do |config|
   # Example for VirtualBox:
   #
   config.vm.provider :libvirt do |libvirt|
-    libvirt.cpus = 2
+    libvirt.cpus = 4
     # Customize the amount of memory on the VM:
-    libvirt.memory = "2048"
+    libvirt.memory = "4096"
   end
   # View the documentation for the provider you are using for more
   # information on available options.
@@ -72,11 +72,11 @@ Vagrant.configure("2") do |config|
     }
     ansible.extra_vars = {
       distribution: "debian",
-      distribution_release: "buster"
+      distribution_release: "bullseye"
     }
   end
 
   config.vm.define "single-node" do |node|
-    node.vm.box = "debian/buster64"
+    node.vm.box = "debian/bullseye64"
   end
 end
