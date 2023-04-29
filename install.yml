@@ -46,3 +46,9 @@
     - docker
     - k8s-kubectl
     - k8s-worker
+
+- name: Provisioning Kubernetes API load balancers
+  hosts: loadbalancers
+  become: yes
+  roles:
+    - nginx
