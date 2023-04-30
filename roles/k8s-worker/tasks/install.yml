@@ -97,7 +97,7 @@
   ansible.builtin.command: "kubectl config set-cluster {{ cluster_name }} \
     --certificate-authority=/var/lib/kubernetes/ca.pem \
     --embed-certs=true \
-    --server=https://{{ ansible_host }}:6443 \
+    --server=https://{{ group['loadbalancers'][0] }}:6443 \
     --kubeconfig=/var/lib/kubernetes/kubelet/kubeconfig"
 
 - name: kubelet - Setting config credentials (kubectl config)
@@ -161,7 +161,7 @@
   ansible.builtin.command: "kubectl config set-cluster {{ cluster_name }} \
     --certificate-authority=/var/lib/kubernetes/ca.pem \
     --embed-certs=true \
-    --server=https://{{ ansible_host }}:6443 \
+    --server=https://{{ group['loadbalancers'][0] }}:6443 \
     --kubeconfig=/var/lib/kubernetes/kube-proxy/kubeconfig"
 
 - name: kube-proxy - Setting config credentials (kubectl config)
