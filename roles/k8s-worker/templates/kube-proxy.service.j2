@@ -5,7 +5,7 @@ Documentation=https://github.com/kubernetes/kubernetes
 [Service]
 ExecStart=/usr/local/bin/kube-proxy \
   --config=/var/lib/kubernetes/kube-proxy/config.yaml \
-  --hostname-override=worker-1 \
+  --hostname-override={{ hostname }} \
   --bind-address=0.0.0.0
 Restart=on-failure
 RestartSec=5
