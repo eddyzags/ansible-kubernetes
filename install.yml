@@ -6,8 +6,6 @@
   become: yes
   vars:
     playbook_mode: "install"
-    distribution: "debian"
-    distribution_release: "buster"
   roles:
     - common
 
@@ -15,14 +13,10 @@
   hosts: control-plane-nodes
   become: yes
   vars:
-    kubernetes_public_ip: 192.168.1.1
     cluster_cidr: 10.0.2.0/24
     cluster_service_cidr: 10.0.3.0/24
-    cluster_dns_ip: 10.0.3.2
-    cluster_name: "yard-kubernetes"
+    cluster_name: "homelab-kubernetes"
     playbook_mode: "install"
-    distribution: "debian"
-    distribution_release: "buster"
   roles:
     - k8s-kubectl
     - k8s-etcd
@@ -34,11 +28,10 @@
   hosts: worker-nodes
   become: yes
   vars:
-    kubernetes_public_ip: 192.168.1.1
     cluster_cidr: 10.0.2.0/24
     cluster_service_cidr: 10.0.3.0/24
     cluster_dns_ip: 10.0.3.2
-    cluster_name: "yard-kubernetes"
+    cluster_name: "homelab-kubernetes"
     playbook_mode: "install"
     distribution: "debian"
     distribution_release: "buster"

@@ -2,7 +2,6 @@
 
 kube_controller_manager_version: 1.26.0
 kube_controller_manager_config_path: "/etc/kubernetes/kube-controller-manager"
-service_cluster_ip_range: "{{ cluster_cidr }}"
 leader_elect: true
 bind_address: 0.0.0.0
 use_service_account_credentials: true
