@@ -1,0 +1,51 @@
+---
+
+- name: Installing nginx
+  ansible.builtin.apt:
+    name: "nginx"
+    state: present
+    force: true
+
+- name: Copying nginx configuration file
+  ansible.builtin.template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+  notify:
+    - "Restart nginx service"
+
+- name: Creating configuration directory
+  ansible.builtin.file:
+    path: /etc/nginx/tcpconf.d
+    state: directory
+
+- name: Copying kubernetes nginx configuration file
+  ansible.builtin.template:
+    src: kubernetes.conf.j2
+    dest: /etc/nginx/tcpconf.d/kubernetes.conf
+  notify:
+    - "Restart nginx service"
+
+- name: Uploading kubernetes API certificate private key
+  ansible.builtin.copy:
+    src: "kubernetes-key.pem"
+    dest: /etc/ssl/certs/kubernetes-key.pem
+  notify:
+    - "Restart nginx service"
+
+- name: Uploading kubernetes API certificate public key
+  ansible.builtin.copy:
+    src: "kubernetes.pem"
+    dest: /etc/ssl/certs/kubernetes.pem
+  notify:
+    - "Restart nginx service"
+
+- name: Ensuring nginx is installed
+  ansible.builtin.command: nginx -v
+  tags:
+    - test
+
+- name: Starting nginx service (systemd)
+  ansible.builtin.systemd:
+    name: nginx
+    state: started
+    enabled: true

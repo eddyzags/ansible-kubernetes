@@ -52,7 +52,7 @@
   ansible.builtin.command: "kubectl config set-cluster {{ cluster_name }} \
     --certificate-authority={{ kube_scheduler_config_path }}/ca.pem \
     --embed-certs=true \
-    --server=https://{{ ansible_host }}:6443 \
+    --server=https://{{ group['loadbalancers'][0] }}:6443 \
     --kubeconfig={{ kube_scheduler_config_path }}/kube-scheduler.kubeconfig"
 
 - name: Setting config credentials (kubectl config)

@@ -1,0 +1,15 @@
+---
+
+- name: Executing playbook mode install
+  ansible.builtin.include_tasks:
+    file: install.yml
+  when: playbook_mode == "install"
+  tags:
+    - test
+
+- name: Executing playbook mode uninstall
+  ansible.builtin.include_tasks:
+    file: uninstall.yml
+  when: playbook_mode == "uninstall"
+  tags:
+    - test

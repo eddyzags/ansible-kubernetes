@@ -1,7 +1,7 @@
 ---
 
 - name: Provisioning servers with common tools
-  hosts: single-node
+  hosts: all
   gather_facts: no
   become: yes
   vars:
@@ -11,8 +11,27 @@
   roles:
     - common
 
-- name: Provisioning Kubernetes cluster
-  hosts: single-node
+- name: Provisioning Kubernetes Controle Plane
+  hosts: control-plane-nodes
+  become: yes
+  vars:
+    kubernetes_public_ip: 192.168.1.1
+    cluster_cidr: 10.0.2.0/24
+    cluster_service_cidr: 10.0.3.0/24
+    cluster_dns_ip: 10.0.3.2
+    cluster_name: "yard-kubernetes"
+    playbook_mode: "install"
+    distribution: "debian"
+    distribution_release: "buster"
+  roles:
+    - k8s-kubectl
+    - k8s-etcd
+    - k8s-apiserver
+    - k8s-scheduler
+    - k8s-controller-manager
+
+- name: Provisioning Kubernetes Worker Nodes
+  hosts: worker-nodes
   become: yes
   vars:
     kubernetes_public_ip: 192.168.1.1
@@ -26,8 +45,10 @@
   roles:
     - docker
     - k8s-kubectl
-    - k8s-etcd
-    - k8s-apiserver
-    - k8s-scheduler
-    - k8s-controller-manager
     - k8s-worker
+
+- name: Provisioning Kubernetes API load balancers
+  hosts: loadbalancers
+  become: yes
+  roles:
+    - nginx
