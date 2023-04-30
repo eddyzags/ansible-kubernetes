@@ -12,7 +12,7 @@
     - common
 
 - name: Provisioning Kubernetes Controle Plane
-  hosts: control-plane
+  hosts: control-plane-nodes
   become: yes
   vars:
     kubernetes_public_ip: 192.168.1.1
@@ -31,7 +31,7 @@
     - k8s-controller-manager
 
 - name: Provisioning Kubernetes Worker Nodes
-  hosts: worker-node
+  hosts: worker-nodes
   become: yes
   vars:
     kubernetes_public_ip: 192.168.1.1
