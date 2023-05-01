@@ -15,7 +15,7 @@ clusterDNS:
 podCIDR: "{{ cluster_cidr }}"
 resolvConf: "/etc/resolv.conf"
 runtimeRequestTimeout: "15m"
-tlsCertFile: "/var/lib/kubernetes/kubelet/worker-1.pem"
-tlsPrivateKeyFile: "/var/lib/kubernetes/kubelet/worker-1-key.pem"
+tlsCertFile: "/var/lib/kubernetes/kubelet/worker-{{ host_index }}.pem"
+tlsPrivateKeyFile: "/var/lib/kubernetes/kubelet/worker-{{ host_index }}-key.pem"
 cgroupDriver: "systemd"
 registerNode: true

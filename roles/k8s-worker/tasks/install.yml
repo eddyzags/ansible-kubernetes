@@ -67,14 +67,14 @@
 
 - name: kubelet - Copying Certificate public key
   ansible.builtin.copy:
-    src: "worker-1.pem"
+    src: "worker-{{ host_index }}.pem"
     dest: "/var/lib/kubernetes/kubelet/"
   notify:
     - "Restart kubelet service"
 
 - name: kubelet - Copying Certificate private key
   ansible.builtin.copy:
-    src: "worker-1-key.pem"
+    src: "worker-{{ host_index }}-key.pem"
     dest: "/var/lib/kubernetes/kubelet/"
   notify:
     - "Restart kubelet service"
@@ -97,20 +97,20 @@
   ansible.builtin.command: "kubectl config set-cluster {{ cluster_name }} \
     --certificate-authority=/var/lib/kubernetes/ca.pem \
     --embed-certs=true \
-    --server=https://{{ group['loadbalancers'][0] }}:6443 \
+    --server=https://{{ groups['loadbalancers'][0] }}:443 \
     --kubeconfig=/var/lib/kubernetes/kubelet/kubeconfig"
 
 - name: kubelet - Setting config credentials (kubectl config)
-  ansible.builtin.command: "kubectl config set-credentials system:node:worker-1 \
-    --client-certificate=/var/lib/kubernetes/kubelet/worker-1.pem \
-    --client-key=/var/lib/kubernetes/kubelet/worker-1-key.pem \
+  ansible.builtin.command: "kubectl config set-credentials system:node:worker-{{ host_index }} \
+    --client-certificate=/var/lib/kubernetes/kubelet/worker-{{ host_index }}.pem \
+    --client-key=/var/lib/kubernetes/kubelet/worker-{{ host_index }}-key.pem \
     --embed-certs=true \
     --kubeconfig=/var/lib/kubernetes/kubelet/kubeconfig"
 
 - name: kubelet - Setting config context (kubectl config)
   ansible.builtin.command: "kubectl config set-context default \
     --cluster={{ cluster_name }} \
-    --user=system:node:worker-1 \
+    --user=system:node:worker-{{ host_index }} \
     --kubeconfig=/var/lib/kubernetes/kubelet/kubeconfig"
 
 - name: kubelet - Setting config current context (kubectl config)
@@ -161,7 +161,7 @@
   ansible.builtin.command: "kubectl config set-cluster {{ cluster_name }} \
     --certificate-authority=/var/lib/kubernetes/ca.pem \
     --embed-certs=true \
-    --server=https://{{ group['loadbalancers'][0] }}:6443 \
+    --server=https://192.168.122.52:6443 \
     --kubeconfig=/var/lib/kubernetes/kube-proxy/kubeconfig"
 
 - name: kube-proxy - Setting config credentials (kubectl config)
@@ -201,11 +201,11 @@
     seconds: 8
 
 - name: Ensuring that kubelet is running /healthz
-  ansible.builtin.command: "curl --cacert /var/lib/kubernetes/ca.pem https://{{ ansible_host }}:10259/healthz"
+  ansible.builtin.command: "curl http://127.0.0.1:10248/healthz"
   tags:
     - test
 
 - name: Ensuring that kube-proxy is running /healthz
-  ansible.builtin.command: "curl http://{{ ansible_host }}:10256/healthz"
+  ansible.builtin.command: "curl http://127.0.0.1:10249/healthz"
   tags:
     - test
