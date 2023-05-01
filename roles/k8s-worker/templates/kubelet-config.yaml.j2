@@ -12,7 +12,7 @@ authorization:
 clusterDomain: "cluster.local"
 clusterDNS:
   - "{{ cluster_dns_ip }}"
-podCIDR: "{{ cluster_cidr }}"
+podCIDR: "10.0.{{ host_index }}.0/24"
 resolvConf: "/etc/resolv.conf"
 runtimeRequestTimeout: "15m"
 tlsCertFile: "/var/lib/kubernetes/kubelet/worker-{{ host_index }}.pem"
