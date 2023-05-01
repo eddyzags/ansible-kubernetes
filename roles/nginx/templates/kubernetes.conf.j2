@@ -5,12 +5,9 @@ stream {
     }
 
     server {
-        listen 6443 ssl;
-        listen 443 ssl;
+        listen 6443;
+        listen 443;
         proxy_pass kubernetes;
-
-        ssl_certificate /etc/ssl/certs/kubernetes.pem;
-        ssl_certificate_key /etc/ssl/certs/kubernetes-key.pem;
     }
 }
 

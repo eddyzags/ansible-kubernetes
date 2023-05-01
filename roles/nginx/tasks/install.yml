@@ -1,10 +1,13 @@
 ---
 
-- name: Installing nginx
+- name: Installing nginx and ufw
   ansible.builtin.apt:
-    name: "nginx"
+    name: "{{ item }}"
     state: present
     force: true
+  with_items:
+    - nginx
+    - ufw
 
 - name: Copying nginx configuration file
   ansible.builtin.template:
@@ -25,19 +28,14 @@
   notify:
     - "Restart nginx service"
 
-- name: Uploading kubernetes API certificate private key
-  ansible.builtin.copy:
-    src: "kubernetes-key.pem"
-    dest: /etc/ssl/certs/kubernetes-key.pem
-  notify:
-    - "Restart nginx service"
+- name: Enabling ufw iptables
+  ansible.builtin.command: sudo ufw enable
 
-- name: Uploading kubernetes API certificate public key
-  ansible.builtin.copy:
-    src: "kubernetes.pem"
-    dest: /etc/ssl/certs/kubernetes.pem
-  notify:
-    - "Restart nginx service"
+- name: Defining iptables rules to allow nginx HTTPS inbound traffic
+  ansible.builtin.command: sudo ufw allow 'Nginx HTTPS'
+
+- name: Defining iptables rules to allow nginx SSH inbound traffic
+  ansible.builtin.command: sudo ufw allow 'Nginx SSH'
 
 - name: Ensuring nginx is installed
   ansible.builtin.command: nginx -v
