@@ -43,5 +43,7 @@
 - name: Provisioning Kubernetes API load balancers
   hosts: loadbalancers
   become: yes
+  vars:
+    playbook_mode: "install"
   roles:
     - nginx
