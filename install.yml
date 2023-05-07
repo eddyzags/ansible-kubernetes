@@ -14,7 +14,7 @@
   become: yes
   vars:
     cluster_cidr: 10.0.2.0/24
-    cluster_service_cidr: 10.0.3.0/24
+    cluster_service_cidr: 10.0.0.0/24
     cluster_name: "homelab-kubernetes"
     playbook_mode: "install"
   roles:
@@ -43,5 +43,7 @@
 - name: Provisioning Kubernetes API load balancers
   hosts: loadbalancers
   become: yes
+  vars:
+    playbook_mode: "install"
   roles:
     - nginx

@@ -29,13 +29,18 @@
     - "Restart nginx service"
 
 - name: Enabling ufw iptables
-  ansible.builtin.command: sudo ufw enable
+  community.general.ufw:
+    state: enabled
 
 - name: Defining iptables rules to allow nginx HTTPS inbound traffic
-  ansible.builtin.command: sudo ufw allow 'Nginx HTTPS'
+  community.general.ufw:
+    rule: allow
+    name: Nginx HTTPS
 
 - name: Defining iptables rules to allow nginx SSH inbound traffic
-  ansible.builtin.command: sudo ufw allow 'Nginx SSH'
+  community.general.ufw:
+    rule: allow
+    name: SSH
 
 - name: Ensuring nginx is installed
   ansible.builtin.command: nginx -v
