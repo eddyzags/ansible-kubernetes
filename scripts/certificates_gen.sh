@@ -242,7 +242,7 @@ cfssl gencert \
       -ca=output/certs/ca.pem \
       -ca-key=output/certs/ca-key.pem \
       -config=output/certs/config/ca_config.json \
-      -hostname=192.168.1.82,192.168.122.52,192.168.122.75,10.0.2.1,10.0.3.1,10.0.0.0,127.0.0.1,homelab,kubernetes,kubernetes.default,kubernetes.default.svc,kubernetes.default.svc.cluster,kubernetes.svc.cluster.local \
+      -hostname=192.168.1.82,192.168.122.52,192.168.122.75,10.0.2.1,10.0.3.1,10.0.0.1,127.0.0.1,homelab,kubernetes,kubernetes.default,kubernetes.default.svc,kubernetes.default.svc.cluster,kubernetes.svc.cluster.local \
       -profile=kubernetes \
       output/certs/config/kubernetes_csr.json | output/cfssl/bin/cfssljson -bare -output output/certs kubernetes
 echo "kube-apiserver certificate generated.\n\n"
