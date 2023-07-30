@@ -42,27 +42,6 @@
     dest: "/opt/cni/bin"
     remote_src: yes
 
-- name: kubelet - Copying Container Network Interface (CNI) bridge configuration
-  ansible.builtin.template:
-    src: "cni-10-bridge.conf.j2"
-    dest: "/etc/cni/net.d/10-bridge.conf"
-  notify:
-    - "Restart kubelet service"
-
-- name: kubelet - Copying Container Network Interface (CNI) loopback configuration
-  ansible.builtin.template:
-    src: "cni-99-loopback.conf.j2"
-    dest: "/etc/cni/net.d/99-loopback.conf"
-  notify:
-    - "Restart kubelet service"
-
-- name: kubelet - Copying Container Network Interface (CNI) portmap plugin configuration
-  ansible.builtin.template:
-    src: "cni-10-portmapping.conflist.j2"
-    dest: "/etc/cni/net.d/cni-10-portmapping.conflist"
-  notify:
-    - "Restart kubelet service"
-
 - name: Disabling swap memory
   ansible.builtin.command: "swapoff -a"
 
