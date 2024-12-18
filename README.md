@@ -63,7 +63,7 @@ $> ./script/certificates_gen.sh worker-0:192.168.1.1,worker-1:192.168.1.2,worker
 
 Single node provisioning implements a mode to deploy all the Kubernetes components in a single server (Bare metal, container, or VM). This can be useful if your resources are limited, and you want to spin up a Kubernetes quickly to experiment.
 
-First of all, you'll need to specify one IP address in which the Ansible agent will ssh in the inventory file:
+First of all, you'll need to specify one IP address in which the Ansible agent will ssh in the inventory file inside the `install.yaml` file:
 
 ```bash
 [single-node]
@@ -77,7 +77,24 @@ $> ansibe-playbook install.yml
 
 #### Multi-node provisionning
 
-_Work in progress_
+Multi-node provisioning implements a mode to deploy all the Kubernetes components for multiple servers. This can be useful if you have many physical servers to provision. In that case, the Ansible Playbook offers the flexibility to define two groups
+
+1. `control-plane-nodes`
+   The control planes nodes run servers that are required to control the Kubernetes cluster.
+2. `worker-nodes`
+   The worker nodes are used to run containerized applications and handle networking.
+
+Then, you will need to specific the IPs address in which the Ansible agent will ssh and install the required software according to the groups:
+
+```bash
+[control-plane-nodes]
+192.168.0.19 host_index=1 ansible_user=user1 hostname=control-plane-1
+192.168.0.24 host_index=2 ansible_user=user1 hostname=control-plane-2
+
+[worker-nodes]
+192.168.0.19 host_index=1 ansible_user=user1 hostname=worker-1
+192.168.0.24 host_index=2 ansible_user=user1 hostname=worker-2
+```
 
 ### Deprovisioning
 
