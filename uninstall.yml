@@ -1,17 +1,34 @@
 ---
 
-- name: Deprovisionning Kubernetes cluster and common tools
-  hosts: single-node
+- name: Deprovisioning servers with common tools
+  hosts: all
   gather_facts: no
   become: yes
   vars:
     playbook_mode: "uninstall"
   roles:
     - common
-    - docker
+
+- name: Deprovisionning Kubernetes cluster and common tools
+  hosts: control-plane-nodes
+  gather_facts: no
+  become: yes
+  vars:
+    playbook_mode: "uninstall"
+  roles:
     - k8s-apiserver
     - k8s-controller-manager
     - k8s-etcd
     - k8s-kubectl
     - k8s-scheduler
+
+- name: Deprovisionning Kubernetes cluster and common tools
+  hosts: worker-nodes
+  gather_facts: no
+  become: yes
+  vars:
+    playbook_mode: "uninstall"
+  roles:
+    - docker
+    - k8s-kubectl
     - k8s-worker
