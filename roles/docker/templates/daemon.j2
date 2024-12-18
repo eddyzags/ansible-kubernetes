@@ -6,6 +6,7 @@
   "log-opts": {
     "max-size": "{{log_max_size}}"
   },
+  "insecure-registries": ["docker-registry:80"],
   "storage-driver": "{{storage_driver}}",
   "cgroup-parent": "docker.slice"
 }
