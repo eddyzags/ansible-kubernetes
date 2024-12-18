@@ -13,7 +13,6 @@
   hosts: control-plane-nodes
   become: yes
   vars:
-    cluster_cidr: 10.0.2.0/24
     cluster_service_cidr: 10.0.0.0/24
     cluster_name: "homelab-kubernetes"
     playbook_mode: "install"
@@ -28,7 +27,6 @@
   hosts: worker-nodes
   become: yes
   vars:
-    cluster_cidr: 10.0.2.0/24
     cluster_dns_ip: 10.0.0.2
     cluster_name: "homelab-kubernetes"
     playbook_mode: "install"
