@@ -1,19 +1,16 @@
 ---
 
-- name: Downloading Google cloud public signing key
-  get_url:
-    url: "https://packages.cloud.google.com/apt/doc/apt-key.gpg"
-    dest: "/usr/share/keyrings/kubernetes-archive-keyring.gpg"
-
-- name: Adding kubernetes apt repository
-  ansible.builtin.apt_repository:
-    repo: "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main"
-    state: present
-
-- name: Copying kernel module configuration file for network filter
-  ansible.builtin.copy:
-    src: modules-load.d_k8s.conf
-    dest: /etc/modules-load.d/k8s.conf
+- name: Downloading kubectl
+  ansible.builtin.uri:
+    url: https://dl.k8s.io/release/v1.27.4/bin/linux/amd64/kubectl
+    mode: 744
+    dest: /usr/bin/
+    status_code:
+      - 302
+      - 200
+      - 304
+  retries: 3
+  delay: 2
 
 - name: Copying kernel module configuration file for network filter to activate iptables
   ansible.builtin.copy:
@@ -22,20 +19,3 @@
 
 - name: Loading configration file to modify kernel at runtime
   ansible.builtin.command: sysctl --system
-
-- name: Installing kubectl binary (apt)
-  ansible.builtin.apt:
-    name:
-      - "kubectl"
-    state: present
-    force: true
-
-- name: Preventing kubectl from being upgraded
-  dpkg_selections:
-    name: kubectl
-    selection: hold
-
-- name: Ensuring that kubectl is installed
-  ansible.builtin.command: dpkg -l --no-pager kubectl
-  tags:
-    - test
