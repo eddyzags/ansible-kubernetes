@@ -2,6 +2,8 @@
 
 apt_default_packages:
   - "apt-transport-https"
+  - "ca-certificates"
+  - "gnupg"
   - "aptitude"
   - "curl"
   - "python3-minimal"
