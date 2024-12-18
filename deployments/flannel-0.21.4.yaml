@@ -82,7 +82,8 @@ data:
           "type": "portmap",
           "capabilities": {
             "portMappings": true
-          }
+          },
+          "externalSetMarkChain": "KUBE-MARK-MASQ"
         }
       ]
     }
@@ -153,8 +154,11 @@ spec:
         name: kube-flannel
         resources:
           requests:
-            cpu: 100m
-            memory: 50Mi
+            cpu: 500m
+            memory: 128Mi
+          limits:
+            cpu: 1000m
+            memory: 256Mi
         securityContext:
           capabilities:
             add:
